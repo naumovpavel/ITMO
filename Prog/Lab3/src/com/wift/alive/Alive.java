@@ -20,7 +20,7 @@ public abstract class Alive extends Enity implements AliveInterface{
     }
 
     public Alive(String name) {
-        this(name, name, null, null);
+        super(name, name);
     }
 
     @Override

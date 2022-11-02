@@ -1,3 +1,5 @@
+package com.wift;
+
 import com.wift.alive.*;
 import com.wift.events.Event;
 import com.wift.events.EventType;
