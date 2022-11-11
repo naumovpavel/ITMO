@@ -1,0 +1,31 @@
+{
+  "group" : "P3118",
+  "dayOfWeek" : {
+    "wednesday" : {
+      "lesson_1" : {
+        "lesson": "inf",
+        "time" : "11:40 - 13:10",
+        "auidience" : "2332",
+        "place" : "kronva",
+        "weeks" : "2, 4, 6, 8, 10, 12, 14, 16",
+        "pepod" : "ribakov"
+      },
+      "lesson_2" : {
+        "lesson": "inf",
+        "time" : "11:40 - 13:10",
+        "auidience" : "2332",
+        "place" : "kronva",
+        "weeks" : "2, 4, 6, 8, 10, 12, 14, 16",
+        "pepod" : "ribakov"
+      },
+      "lesson_3" : {
+        "lesson": "inf",
+        "time" : "11:40 - 13:10",
+        "auidience" : "2332",
+        "place" : "kronva",
+        "weeks" : "2, 4, 6, 8, 10, 12, 14, 16",
+        "pepod" : "ribakov"
+      }
+    }
+  }
+}

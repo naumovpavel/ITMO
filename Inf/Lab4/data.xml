@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <group>P3118</group>
+    <dayOfWeek>
+        <wednesday>
+            <lesson_1>
+                <lesson>inf</lesson>
+                <time>11:40 - 13:10</time>
+                <auidience>2332</auidience>
+                <place>kronva</place>
+                <weeks>2, 4, 6, 8, 10, 12, 14, 16</weeks>
+                <pepod>ribakov</pepod>
+            </lesson_1>
+            <lesson_2>
+                <lesson>inf</lesson>
+                <time>11:40 - 13:10</time>
+                <auidience>2332</auidience>
+                <place>kronva</place>
+                <weeks>2, 4, 6, 8, 10, 12, 14, 16</weeks>
+                <pepod>ribakov</pepod>
+            </lesson_2>
+            <lesson_3>
+                <lesson>inf</lesson>
+                <time>11:40 - 13:10</time>
+                <auidience>2332</auidience>
+                <place>kronva</place>
+                <weeks>2, 4, 6, 8, 10, 12, 14, 16</weeks>
+                <pepod>ribakov</pepod>
+            </lesson_3>
+        </wednesday>
+    </dayOfWeek>
+</root>
