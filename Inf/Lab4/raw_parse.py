@@ -26,5 +26,4 @@ def parse(data, deep):
             val = get_value(str)
             ans[key] = val
         i += 1
-
     return ans

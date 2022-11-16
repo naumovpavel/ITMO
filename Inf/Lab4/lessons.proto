@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+message wednesday {
+  repeated lesson lessons = 1;
+}
+
+message lesson {
+  string lesson = 1;
+  string time = 2;
+  string audience = 3;
+  string place = 4;
+  string teacher = 5;
+  string weeks = 6;
+}
+
+message root {
+  string group = 1;
+  wednesday day = 2;
+}

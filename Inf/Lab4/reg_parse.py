@@ -1,11 +1,12 @@
 import re
+from pprint import pprint
 
-key_val = re.compile(r"\s*\"([A-Za-z0-9_, :-]+)\"\s*:\s*\"([A-Za-z0-9_:, -]+)\"")
+key_val = re.compile(r"\s*\"([()А-Яа-яёЁA-Za-z0-9_., :-]+)\"\s*:\s*\"([()А-Яа-яёЁA-Za-z0-9_:., -]+)\"")
 def reg_parse_key_val(str):
     match = re.match(key_val, str)
     return match.group(1), match.group(2)
 
-start_obj = re.compile(r"\s*\"([A-Za-z0-9_, :-]+)\"\s*:\s*{\s*")
+start_obj = re.compile(r"\s*\"([()А-Яа-яёЁA-Za-z0-9_., :-]+)\"\s*:\s*{\s*")
 def reg_parse_start_obj(str):
     match = re.match(start_obj, str)
     if match is None:
@@ -38,5 +39,4 @@ def reg_parse(data, deep):
             key, val = reg_parse_key_val(str)
             ans[key] = val
         i += 1
-
     return ans
