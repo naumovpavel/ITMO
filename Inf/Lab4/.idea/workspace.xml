@@ -5,16 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48952cf4-8326-4d38-a773-59532935cf9f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data_lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lessons.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/to_proto.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data.json" beforeDir="false" afterPath="$PROJECT_DIR$/data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib_parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib_parse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/raw_parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/raw_parse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reg_parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/reg_parse.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Prog/Lab3/src/com/wift/alive/Alive.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Prog/Lab3/src/com/wift/alive/Alive.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +34,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/User/PycharmProjects/tgQueueBot/utils/Persons.py",
+    "last_opened_file_path": "C:/inf/lab3/Lab3",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -85,7 +75,7 @@
       <option name="presentableId" value="Default" />
       <updated>1667908095639</updated>
       <workItem from="1667908104783" duration="2846000" />
-      <workItem from="1668186143702" duration="19869000" />
+      <workItem from="1668186143702" duration="20017000" />
     </task>
     <servers />
   </component>
