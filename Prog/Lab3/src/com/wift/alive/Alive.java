@@ -23,6 +23,8 @@ public abstract class Alive extends Enity implements AliveInterface{
         super(name, name);
     }
 
+
+
     @Override
     public States[] getStates() {
         return states;

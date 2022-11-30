@@ -12,7 +12,7 @@ public class Sniff extends Character{
     @Override
     public void setEmotion(Emotions emotion) {
         if(emotion == Emotions.SCARED) {
-            System.out.printf("");
+            System.out.format("%s попискивает от страха\n", getPadejName());
             this.emotion = emotion;
         } else {
             super.setEmotion(emotion);

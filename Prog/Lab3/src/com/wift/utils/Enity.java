@@ -4,7 +4,9 @@ import java.util.Objects;
 
 
 /**
+ *
  * Базовый абстрактный класс для сущностей
+ *
  * */
 public abstract class Enity {
     protected String name, padejName;

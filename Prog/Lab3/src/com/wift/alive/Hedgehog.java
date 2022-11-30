@@ -3,7 +3,7 @@ package com.wift.alive;
 import com.wift.events.EventType;
 import com.wift.utils.Direction;
 
-public class Hedgehog extends Alive{
+public class Hedgehog extends Animal implements HedgehogInterface{
     public Hedgehog(String name, Emotions emotion, States... states) {
         super(name, emotion, states);
     }

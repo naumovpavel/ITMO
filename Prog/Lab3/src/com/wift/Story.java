@@ -11,23 +11,27 @@ public class Story {
     Event waiting = new Event("ожидание", EventType.AGAIN, EventType.UNBEARABLE);
     Hat hat = new Hat();
     Water water = new Water();
-    FrekenSnork FS = new FrekenSnork("Фрекен Снорк");
-    MumiTroll MT = new MumiTroll("Муми-тролль");
-    Sniff SN = new Sniff("Снифф");
+    FrekenSnork frekenSnork = new FrekenSnork("Фрекен Снорк");
+    MumiTroll mumiTroll = new MumiTroll("Муми-тролль");
+    Sniff sniff = new Sniff("Снифф");
     Hedgehog hedgehog = new Hedgehog("ежик", null,States.MAYBESMALLEST, States.DISHEVELED, States.WET);
-    ForeignWords FW = new ForeignWords("иностранные слова", "иностранным словам");
+    ForeignWords foreignWords = new ForeignWords("иностранные слова", "иностранным словам");
+    Furniture walls = new Furniture("стена", "стенах");
+    Event rescue = new Event("спасение");
 
     public void run() {
         smth.happend();
         hat.drip(HatParts.BRIMS);
         hat.pour(HatParts.BRIMS);
         water.speskOut(Water.WaterType.FLOWS, new Furniture("ковер", "ковер"));
-        FW.haveto(FW.find(new Event("спасение").toString(), new Furniture("стена", "стенах").toString()));
+        foreignWords.haveto(foreignWords.find(rescue.toString(), walls.getPadejName()));
         waiting.goingOn();
-        FS.scare(MT, BodeParts.CHEST);
-        SN.setEmotion(Emotions.SCARED);
+        frekenSnork.scare(mumiTroll, BodeParts.CHEST);
+        sniff.setEmotion(Emotions.SCARED);
         hat.showSmth(HatParts.BRIMS, hedgehog);
         hedgehog.wriggle(Direction.IN_ALL_DIRECTION);
         hedgehog.squint(States.HALF_SIGHTED);
+        hedgehog.feed(1000);
+        System.out.println(hedgehog.getAnimalState());
     }
 }
