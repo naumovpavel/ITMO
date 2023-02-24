@@ -1,0 +1,86 @@
+{
+  "collection4" : [
+    {
+      "name" : "fdfd",
+      "height" : "555555.0",
+      "eyeColor" : "ORANGE"
+    },
+    {
+      "name" : "fdfd",
+      "height" : 0.1,
+      "eyeColor" : "ORANGE"
+    },
+    {
+      "name" : "fdfd",
+      "height" : 555555.0,
+      "eyeColor" : "ORANGE"
+    }
+  ],
+  "collection32" : [
+    {
+      "x" : 55,
+      "y" : 44
+    },
+    {
+      "x" : null,
+      "y" : 865
+    },
+    {
+      "x" : -40,
+      "y" : 44
+    }
+  ],
+  "collection1" : [
+     {
+      "name" : "1",
+      "height" : "555555.0",
+      "eyeColor" : null
+    },
+    {
+      "name" : "2",
+      "height" : "2.0",
+      "eyeColor" : "ORANGE"
+    },
+    {
+      "name" : "3",
+      "height" : "3.0",
+      "eyeColor" : "ORANGE"
+    }
+  ],
+  "collection" : [
+    {
+      "id" : 43,
+      "name" : "1",
+      "coordinates" : {
+        "x" : 54533,
+        "y" : 434
+      },
+      "creationDate" : "Jun 18 20:56:02 2009",
+      "minimalPoint" : 545,
+      "tunedInWorks" : 545,
+      "difficulty" : "HARD",
+      "author" : {
+        "name" : "fdfd",
+        "height" : "555555.0",
+        "eyeColor" : "ORANGE"
+      }
+    },
+    {
+      "id" : 45,
+      "name" : "2",
+      "coordinates" : {
+        "x" : 54533,
+        "y" : 434
+      },
+      "creationDate" : "Jun 18 20:56:02 2009",
+      "minimalPoint" : 545,
+      "tunedInWorks" : 34,
+      "difficulty" : "NORMAL",
+      "author" : {
+        "name" : "fdfd",
+        "height" : "555555.0",
+        "eyeColor" : "ORANGE"
+      }
+    }
+  ]
+}

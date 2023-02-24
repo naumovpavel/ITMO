@@ -1,0 +1,16 @@
+add
+BROWN
+55
+fff
+Y
+N
+53
+TERRIBLE
+N
+45
+fff
+Y
+
+exit
+
+
