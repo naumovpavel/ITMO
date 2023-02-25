@@ -25,5 +25,5 @@ public abstract class Writer<E extends Model> {
      * @param collection collection of E type elements
      * @param <T> collection type
      */
-    abstract public <T extends Collection<E>> void write(T collection);
+    abstract public <T extends Collection<E>> boolean write(T collection);
 }

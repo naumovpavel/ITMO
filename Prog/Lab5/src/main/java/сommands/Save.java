@@ -15,7 +15,7 @@ public class Save extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        handler.save();
-        System.out.println("Коллекция успешно сохранена");
+        if(handler.save())
+            System.out.println("Коллекция успешно сохранена");
     }
 }

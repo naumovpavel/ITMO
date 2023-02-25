@@ -29,21 +29,21 @@ public class JsonWriter<E extends Model> extends Writer<E> {
      * @param <T> collection type
      */
     @Override
-    public <T extends Collection<E>> void write(T collection) {
+    public <T extends Collection<E>> boolean write(T collection) {
         FileWriter out = null;
 
         try {
             if(System.getenv("lab5") == null) {
                 System.out.println("Не задана переменная окружения lab5. Коллекция не загружена");
-                return;
+                return false;
             }
             out = new FileWriter(System.getenv("lab5"));
         } catch (FileNotFoundException e) {
             System.out.println("Не удалось открыть файл");
-            return;
+            return false;
         } catch (IOException e) {
             System.out.println("Не прочитать файл");
-            return;
+            return false;
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -58,8 +58,10 @@ public class JsonWriter<E extends Model> extends Writer<E> {
             out.close();
         } catch (IOException e) {
             System.out.println("Не удалось сохранить файл");
+            return false;
         }
 
+        return true;
     }
 
 

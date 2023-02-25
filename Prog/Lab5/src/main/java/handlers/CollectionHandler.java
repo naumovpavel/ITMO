@@ -34,9 +34,9 @@ public abstract class CollectionHandler<T extends Collection<E>, E extends Model
         loader.read(collection);
     }
 
-    public void save() {
+    public boolean save() {
         Writer<E> writer = new JsonWriter<>(tree);
-        writer.write(collection);
+        return writer.write(collection);
     }
     abstract public T getCollection();
 
