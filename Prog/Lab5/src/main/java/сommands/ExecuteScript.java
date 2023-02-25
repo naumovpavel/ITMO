@@ -10,6 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Stack;
 
+/**
+ * Execute script command
+ */
 public class ExecuteScript extends Command {
     private final CollectionHandler<?, ?> handler;
     private final ModelTree tree;

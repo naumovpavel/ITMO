@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ * Class for converting string values to required type
+ */
 public class Converter {
     private static final HashMap<String, Convert> converters = new HashMap<>();
 
@@ -21,6 +24,13 @@ public class Converter {
         converters.put(Date.class.getName(), (type, x) -> (new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy",  Locale.ENGLISH).parse(x)));
     }
 
+    /**
+     * Converts string value to required type
+     * @param type type
+     * @param value value
+     * @return converted value
+     * @param <T> type
+     */
     @SuppressWarnings("unchecked")
     public static <T> T convert(Class<T> type, String value) {
         if(value == null) {
@@ -36,6 +46,12 @@ public class Converter {
         return null;
     }
 
+    /**
+     * Return null representation of required type
+     * @param type type
+     * @return null value
+     * @param <T> type
+     */
     @SuppressWarnings("unchecked")
     private static <T> T getNull(Class<T> type) {
         try {
@@ -55,6 +71,12 @@ public class Converter {
         return null;
     }
 
+    /**
+     * Checks if type is primitive
+     * @param type type
+     * @return true if type is primitive
+     * @param <T> type
+     */
     public static <T> boolean checkForPrimitive(Class<T> type) {
         return converters.containsKey(type.getName()) || type.isEnum();
     }

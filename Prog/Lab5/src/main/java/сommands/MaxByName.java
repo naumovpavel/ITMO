@@ -2,6 +2,9 @@ package сommands;
 
 import handlers.CollectionHandler;
 
+/**
+ * Max by name command
+ */
 public class MaxByName extends Command {
     private final CollectionHandler<?, ?> handler;
 

@@ -2,6 +2,9 @@ package utils.validators;
 
 import utils.Converter;
 
+/**
+ * Class that validate that field grater or equal than certain value
+ */
 public class GraterThanValidator implements ValidatableWithArg{
     private String value;
     public GraterThanValidator(String value) {
@@ -11,11 +14,7 @@ public class GraterThanValidator implements ValidatableWithArg{
         this.value = "0";
     }
 
-    public static GraterThanValidator getInstance(String value) {
-        return new GraterThanValidator(value);
-    }
-    @Override
-    public GraterThanValidator getInstanc(String value) {
+    public GraterThanValidator getInstance(String value) {
         return new GraterThanValidator(value);
     }
 
@@ -31,7 +30,7 @@ public class GraterThanValidator implements ValidatableWithArg{
     }
 
     @Override
-    public Validatable getInstanc() {
+    public Validatable getInstance() {
         return new GraterThanValidator("0");
     }
 }

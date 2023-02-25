@@ -3,6 +3,9 @@ package сommands;
 import handlers.CollectionHandler;
 import utils.Converter;
 
+/**
+ * Remove by id command
+ */
 public class RemoveById extends Command {
     private final CollectionHandler<?, ?> handler;
 

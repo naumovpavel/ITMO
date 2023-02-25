@@ -3,6 +3,9 @@ package сommands;
 import handlers.CollectionHandler;
 import models.LabWork;
 
+/**
+ * Info command
+ */
 public class Info extends Command {
     private final CollectionHandler<?, ?> handler;
 

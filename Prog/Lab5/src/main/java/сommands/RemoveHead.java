@@ -3,6 +3,9 @@ package сommands;
 import handlers.CollectionHandler;
 import utils.Converter;
 
+/**
+ * Remove head command
+ */
 public class RemoveHead extends Command {
     private final CollectionHandler<?, ?> handler;
 

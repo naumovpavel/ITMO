@@ -9,13 +9,26 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * Class that can build model objects using Cli
+ */
 public class CLIBuilder implements Builder {
     private final Scanner scanner;
 
+    /**
+     * Default constructor
+     */
     public CLIBuilder() {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Build full initialized and validated model object using Cli and sets id
+     * @param tree ModelTree
+     * @param id id
+     * @return object of Model
+     * @param <T> Model type
+     */
     @SuppressWarnings("unchecked")
     public <T extends Model> T build(ModelTree tree, Long id) {
         T obj = (T) tree.constructor.get();
@@ -59,7 +72,7 @@ public class CLIBuilder implements Builder {
 
             if (field.isEnum()) {
                 System.out.println("Доступные варианты констант для " + field.getName());
-                for(Object x : field.getEnumConstant().values()) {
+                for(Object x : field.getEnumConstants().values()) {
                     System.out.println(x);
                 }
             }
@@ -69,8 +82,8 @@ public class CLIBuilder implements Builder {
                 String value = scanner.nextLine();
 
                 if(field.isEnum()) {
-                    if(field.getEnumConstant().containsKey(value)) {
-                        values.put(field.getName(), field.getEnumConstant().get(value));
+                    if(field.getEnumConstants().containsKey(value)) {
+                        values.put(field.getName(), field.getEnumConstants().get(value));
                         break;
                     } else {
                         System.out.println("Вы ввели не существующюю константу. Повторите ввод");
@@ -78,8 +91,8 @@ public class CLIBuilder implements Builder {
                 } else {
                     try {
                         values.put(field.getName(), Converter.convert(field.getType(), value));
-                        if (tree.getValidatators().containsKey(field.getName())) {
-                            Validator.validate(values.get(field.getName()), tree.getValidatators().get(field.getName()));
+                        if (tree.getValidators().containsKey(field.getName())) {
+                            Validator.validate(values.get(field.getName()), tree.getValidators().get(field.getName()));
                         }
                         break;
                     } catch (IllegalArgumentException e) {
@@ -92,6 +105,12 @@ public class CLIBuilder implements Builder {
         return (T) obj;
     }
 
+    /**
+     * Build full initialized and validated model object using Cli
+     * @param tree ModelTree
+     * @return object of Model
+     * @param <T> Model type
+     */
     public <T extends Model> T build(ModelTree tree) {
         return build(tree, -1L);
     }

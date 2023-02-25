@@ -1,13 +1,10 @@
 package utils.validators;
 
+/**
+ * Class that validate that fields value isn't empty string
+ */
 public class StringNotNoneValidator implements Validatable{
     private static StringNotNoneValidator instance;
-    public static StringNotNoneValidator getInstance() {
-        if (instance == null) {
-            instance = new StringNotNoneValidator();
-        }
-        return instance;
-    }
 
     public <T> boolean validate(T value) throws IllegalArgumentException {
         String s;
@@ -23,7 +20,7 @@ public class StringNotNoneValidator implements Validatable{
     }
 
     @Override
-    public Validatable getInstanc() {
+    public Validatable getInstance() {
         if (instance == null) {
             instance = new StringNotNoneValidator();
         }

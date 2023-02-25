@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-
+/**
+ * LabWork model
+ */
 public class LabWork extends Model implements Comparable<LabWork> {
     @NotNull
     @GraterThan
@@ -52,6 +54,10 @@ public class LabWork extends Model implements Comparable<LabWork> {
         this.tunedInWorks = (long) values.get("tunedInWorks");
     }
 
+    /**
+     * Returns author
+     * @return author
+     */
     public Person getAuthor() {
         return author;
     }
@@ -60,10 +66,18 @@ public class LabWork extends Model implements Comparable<LabWork> {
         return id;
     }
 
+    /**
+     * Returns name
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns tuned in works
+     * @return tuned in works
+     */
     public long getTunedInWorks() {
         return tunedInWorks;
     }
@@ -102,6 +116,6 @@ public class LabWork extends Model implements Comparable<LabWork> {
 
     @Override
     public int compareTo(LabWork o) {
-        return (int)(o.getId() - id);
+        return (int)(o.getTunedInWorks() - id);
     }
 }

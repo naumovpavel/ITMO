@@ -2,6 +2,9 @@ package utils.validators;
 
 import utils.Converter;
 
+/**
+ * Class that validate that fields less than certain value
+ */
 public class LessThanValidator implements ValidatableWithArg{
     private String value;
     public LessThanValidator(String value) {
@@ -11,11 +14,7 @@ public class LessThanValidator implements ValidatableWithArg{
         this.value = "0";
     }
 
-    public static LessThanValidator getInstance(String value) {
-        return new LessThanValidator(value);
-    }
-    @Override
-    public LessThanValidator getInstanc(String value) {
+    public LessThanValidator getInstance(String value) {
         return new LessThanValidator(value);
     }
 
@@ -31,7 +30,7 @@ public class LessThanValidator implements ValidatableWithArg{
     }
 
     @Override
-    public Validatable getInstanc() {
+    public Validatable getInstance() {
         return new LessThanValidator("0");
     }
 }

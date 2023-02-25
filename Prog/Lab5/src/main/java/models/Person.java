@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
+/**
+ * Person model
+ */
 public class Person extends Model implements Comparable<Person> {
     @NotNull
     @StringNotNone
@@ -31,11 +34,6 @@ public class Person extends Model implements Comparable<Person> {
         values.put("eyeColor", eyeColor);
         values.put("height", height);
         return values;
-    }
-
-    @Override
-    public Long getId() {
-        return null;
     }
 
     public Supplier<Person> getConstructorReference() {

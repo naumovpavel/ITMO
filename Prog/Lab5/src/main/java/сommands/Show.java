@@ -2,6 +2,9 @@ package сommands;
 
 import handlers.CollectionHandler;
 
+/**
+ * Show command
+ */
 public class Show extends Command {
     private final CollectionHandler<?, ?> handler;
 

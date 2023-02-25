@@ -5,6 +5,9 @@ import models.Person;
 import utils.input.Builder;
 import utils.ModelTree;
 
+/**
+ * Count less than author command
+ */
 public class CountLessThanAuthor extends Command {
     private final CollectionHandler<?, ?> handler;
     private final ModelTree tree;

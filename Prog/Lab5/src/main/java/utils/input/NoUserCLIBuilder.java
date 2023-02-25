@@ -3,13 +3,14 @@ package utils.input;
 import models.Model;
 import utils.Converter;
 import utils.ModelTree;
-import utils.input.BufferedReader;
-import utils.input.Builder;
 import utils.validators.Validator;
 
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * Class that can build model objects from script file
+ */
 public class NoUserCLIBuilder implements Builder {
     private final BufferedReader reader;
 
@@ -17,6 +18,13 @@ public class NoUserCLIBuilder implements Builder {
         this.reader = reader;
     }
 
+    /**
+     * Build fully initialized and validated model object from file and sets id from script file
+     * @param tree ModelTree
+     * @param id id
+     * @return object of Model
+     * @param <T> Model type
+     */
     @SuppressWarnings("unchecked")
     public <T extends Model> T build(ModelTree tree, Long id) {
         T obj = (T) tree.constructor.get();
@@ -57,16 +65,16 @@ public class NoUserCLIBuilder implements Builder {
             String value = reader.nextLine();
 
             if(field.isEnum()) {
-                if(field.getEnumConstant().containsKey(value)) {
-                    values.put(field.getName(), field.getEnumConstant().get(value));
+                if(field.getEnumConstants().containsKey(value)) {
+                    values.put(field.getName(), field.getEnumConstants().get(value));
                 } else {
                     throw new IllegalArgumentException("Вы ввели не существующую константу " + value);
                 }
             } else {
                 try {
                     values.put(field.getName(), Converter.convert(field.getType(), value));
-                    if (tree.getValidatators().containsKey(field.getName())) {
-                        Validator.validate(values.get(field.getName()), tree.getValidatators().get(field.getName()));
+                    if (tree.getValidators().containsKey(field.getName())) {
+                        Validator.validate(values.get(field.getName()), tree.getValidators().get(field.getName()));
                     }
                 } catch (IllegalArgumentException e) {
                     throw new IllegalArgumentException("Вы ввели недопустимое значение! " + e.getMessage());
@@ -77,6 +85,12 @@ public class NoUserCLIBuilder implements Builder {
         return (T) obj;
     }
 
+    /**
+     * Build full initialized and validated model object from script file
+     * @param tree ModelTree
+     * @return object of Model
+     * @param <T> Model type
+     */
     public <T extends Model> T build(ModelTree tree) {
         return build(tree, -1L);
     }

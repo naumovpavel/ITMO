@@ -6,11 +6,20 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/**
+ * BufferedReader class that implements Reader interface using BufferedInputStream for files
+ * @see BufferedInputStream
+ */
 public class BufferedReader implements Reader {
     private final String[] input;
     private String stringInput = "";
     private int pos = 0;
 
+    /**
+     * Setup BufferedReader and read the file
+     * @param file file
+     * @throws IOException If an I/O occurs reading file
+     */
     public BufferedReader(FileInputStream file) throws IOException {
         BufferedInputStream inputStream = new BufferedInputStream(file);
         ArrayList<Byte> buffer = new ArrayList<>();
@@ -29,6 +38,10 @@ public class BufferedReader implements Reader {
         file.close();
     }
 
+    /**
+     * Return content of the file
+     * @return content of the file
+     */
     public String getStringInput() {
         return stringInput;
     }

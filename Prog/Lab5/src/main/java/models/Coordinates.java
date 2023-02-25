@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
+/**
+ * Coordinates model
+ */
 public class Coordinates extends Model {
     @GraterThan("-73")
     private long x; //Значение поля должно быть больше -73
@@ -27,11 +30,6 @@ public class Coordinates extends Model {
         values.put("x", x);
         values.put("y", y);
         return values;
-    }
-
-    @Override
-    public Long getId() {
-        return null;
     }
 
     public Supplier<Coordinates> getConstructorReference() {

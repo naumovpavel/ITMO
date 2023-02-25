@@ -2,6 +2,9 @@ package сommands;
 
 import handlers.CollectionHandler;
 
+/**
+ * Save command
+ */
 public class Save extends Command {
     private final CollectionHandler<?, ?> handler;
 

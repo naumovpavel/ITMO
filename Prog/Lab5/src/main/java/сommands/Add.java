@@ -4,6 +4,9 @@ import handlers.CollectionHandler;
 import utils.input.Builder;
 import utils.ModelTree;
 
+/**
+ * Add command
+ */
 public class Add extends Command {
     private final CollectionHandler<?, ?> handler;
     private final ModelTree tree;

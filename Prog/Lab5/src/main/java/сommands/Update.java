@@ -5,6 +5,9 @@ import utils.input.Builder;
 import utils.Converter;
 import utils.ModelTree;
 
+/**
+ * Update command
+ */
 public class Update extends Command {
     private final CollectionHandler<?, ?> handler;
     private final ModelTree tree;

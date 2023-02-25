@@ -9,15 +9,29 @@ import java.io.*;
 import java.util.Collection;
 import java.util.HashMap;
 
+/**
+ * Class that writes collection of E type elements to Json file
+ * @param <E> element type
+ */
 public class JsonWriter<E extends Model> extends Writer<E> {
 
+    /**
+     * Default constructor
+     * @param tree model tree
+     */
     public JsonWriter(ModelTree tree) {
         super(tree);
     }
 
+    /**
+     * Method that writes collection of E type elements to Json file,that gets from lab5 envKey, using BufferedReader
+     * @param collection collection of E type elements
+     * @param <T> collection type
+     */
     @Override
     public <T extends Collection<E>> void write(T collection) {
         FileWriter out = null;
+
         try {
             if(System.getenv("lab5") == null) {
                 System.out.println("Не задана переменная окружения lab5. Коллекция не загружена");
@@ -31,17 +45,15 @@ public class JsonWriter<E extends Model> extends Writer<E> {
             System.out.println("Не прочитать файл");
             return;
         }
+
         JSONObject jsonObject = new JSONObject();
-        //jsonObject.append("collection");
         JSONArray jsonArray = new JSONArray();
 
         for(E element : collection) {
-            //jsonArray.put(build(tree, element));
             jsonObject.accumulate("collection", build(tree, element));
         }
-        //jsonObject.append("collection", jsonArray);
+
         try {
-            //System.out.println(jsonObject.toString());
             out.write(jsonObject.toString());
             out.close();
         } catch (IOException e) {

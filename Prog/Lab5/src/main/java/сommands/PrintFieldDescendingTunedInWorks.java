@@ -2,6 +2,9 @@ package сommands;
 
 import handlers.CollectionHandler;
 
+/**
+ * Print field descending tuned in works  command
+ */
 public class PrintFieldDescendingTunedInWorks extends Command {
     private final CollectionHandler<?, ?> handler;
 

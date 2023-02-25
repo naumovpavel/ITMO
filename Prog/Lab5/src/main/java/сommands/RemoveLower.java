@@ -4,6 +4,9 @@ import handlers.CollectionHandler;
 import utils.input.Builder;
 import utils.ModelTree;
 
+/**
+ * Remove lower command
+ */
 public class RemoveLower extends Command {
     private final CollectionHandler<?, ?> handler;
     private final ModelTree tree;

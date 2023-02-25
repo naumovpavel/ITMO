@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * Class that manages commands
+ */
 public class CommandManager {
     private final HashMap<String, Command> commands;
     private Queue<Command> history;
@@ -14,6 +17,14 @@ public class CommandManager {
     private Reader reader;
     private CollectionHandler<?, ?> handler;
 
+    /**
+     * Command manger constructor
+     * @param reader reader
+     * @see Reader
+     * @param handler collection handler
+     * @see CollectionHandler
+     * @param mode command manager mode
+     */
     public CommandManager(Reader reader, CollectionHandler<?, ?> handler, ManagerMode mode) {
         this.mode = mode;
         this.commands = new HashMap<>();
@@ -49,10 +60,18 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Default constructor
+     * @param handler collection handler
+     * @see CollectionHandler
+     */
     public CommandManager(CollectionHandler<?, ?> handler) {
         this(new CliReader(), handler, ManagerMode.User);
     }
 
+    /**
+     * Method that scans and executes commands
+     */
     public void startExecuting() {
         while (reader.hasNextLine()) {
             String command = reader.nextLine();
@@ -67,15 +86,22 @@ public class CommandManager {
         }
     }
 
+    /**
+     * Method that executes command
+     * @param args commands arguments
+     */
     public void executeCommand(String[] args)  {
         if(!commands.containsKey(args[0])) {
-
             throw new IllegalArgumentException("Данной команды не существует");
         }
         commands.get(args[0]).execute(args);
         addToHistory(commands.get(args[0]));
     }
 
+    /**
+     * Method that adds command to history
+     * @param command command
+     */
     protected void addToHistory(Command command) {
         if(history.size() > 10) {
             history.poll();

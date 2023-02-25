@@ -11,11 +11,24 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Class that loads collection of E type elements from Json file using BufferedReader
+ * @param <E>
+ */
 public class JsonLoader<E extends Model> extends Loader<E> {
+    /**
+     * Default constructor
+     * @param tree tree
+     */
     public JsonLoader(ModelTree tree) {
         super(tree);
     }
 
+    /**
+     * Method that read and return collection of E type elements from Json file,that gets from lab5 envKey, using BufferedReader
+     * @param collection collection of E type elements
+     * @param <T> collection type
+     */
     @Override
     public <T extends Collection<E>> void read(T collection) {
         BufferedReader in = null;
@@ -52,6 +65,12 @@ public class JsonLoader<E extends Model> extends Loader<E> {
         }
     }
 
+    /**
+     * Method that  build fully initialized and validated model object from Json file
+     * @param tree model tree
+     * @param jo JsonObject
+     * @param <T> element type
+     */
     @SuppressWarnings("unchecked")
     private  <T extends Model> T build(ModelTree tree, JSONObject jo) throws IllegalArgumentException {
         T obj = (T) tree.constructor.get();
@@ -74,7 +93,7 @@ public class JsonLoader<E extends Model> extends Loader<E> {
                 if(jo.isNull(field.getName())) {
                     values.put(field.getName(), Converter.convert(field.getType(), null));
                     try {
-                        Validator.validate(values.get(field.getName()), tree.getValidatators().get(field.getName()));
+                        Validator.validate(values.get(field.getName()), tree.getValidators().get(field.getName()));
                         continue;
                     } catch (IllegalArgumentException e) {
                         throw new IllegalArgumentException("Проблемы с полем " + field.getName() + ". " + e.getMessage());
@@ -82,16 +101,16 @@ public class JsonLoader<E extends Model> extends Loader<E> {
                 }
 
                 if(field.isEnum()) {
-                    if(field.getEnumConstant().containsKey(value.toString())) {
-                        values.put(field.getName(), field.getEnumConstant().get(value.toString()));
+                    if(field.getEnumConstants().containsKey(value.toString())) {
+                        values.put(field.getName(), field.getEnumConstants().get(value.toString()));
                     } else {
                         throw new IllegalArgumentException("Найдена не существующая константа");
                     }
                 } else {
                     values.put(field.getName(), Converter.convert(field.getType(), value.toString()));
-                    if (tree.getValidatators().containsKey(field.getName())) {
+                    if (tree.getValidators().containsKey(field.getName())) {
                         try {
-                            Validator.validate(values.get(field.getName()), tree.getValidatators().get(field.getName()));
+                            Validator.validate(values.get(field.getName()), tree.getValidators().get(field.getName()));
                         } catch (IllegalArgumentException e) {
                             throw new IllegalArgumentException("Проблемы с полем " + field.getName() + ". " + e.getMessage());
                         }
@@ -113,6 +132,12 @@ public class JsonLoader<E extends Model> extends Loader<E> {
         return (T) obj;
     }
 
+    /**
+     * Method that checks that collection has only unique ids
+     * @param collection collection
+     * @param <T> collection type
+     * @throws IllegalArgumentException throws if method found 2 same id
+     */
     private <T extends Collection<E>> void validateCollection(Collection<E> collection) throws IllegalArgumentException {
         HashSet<Long> ids = new HashSet<>();
         for(var x : collection) {
@@ -123,20 +148,4 @@ public class JsonLoader<E extends Model> extends Loader<E> {
             }
         }
     }
-
-//    private String readFile(BufferedInputStream in) throws IOException {
-//        ArrayList<Byte> buffer = new ArrayList<>();
-//        int c = 0;
-//
-//        while ((c = in.read()) != -1) {
-//            buffer.add((byte) c);
-//        }
-//
-//        byte[] bytes = new byte[buffer.size()];
-//        for (int i = 0; i < buffer.size(); i++) {
-//            bytes[i] = buffer.get(i);
-//        }
-//
-//        return new String(bytes, StandardCharsets.UTF_8);
-//    }
 }

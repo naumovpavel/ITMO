@@ -2,6 +2,9 @@ package сommands;
 
 import handlers.CollectionHandler;
 
+/**
+ * Clear command
+ */
 public class Clear extends Command {
     private final CollectionHandler<?, ?> handler;
 

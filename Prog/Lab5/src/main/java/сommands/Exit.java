@@ -1,5 +1,8 @@
 package сommands;
 
+/**
+ * Exit command
+ */
 public class Exit extends Command {
     public Exit() {
         super("exit", "Выход из программы");

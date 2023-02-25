@@ -2,6 +2,9 @@ package сommands;
 
 import handlers.CollectionHandler;
 
+/**
+ * Head command
+ */
 public class Head extends Command {
     private final CollectionHandler<?, ?> handler;
 

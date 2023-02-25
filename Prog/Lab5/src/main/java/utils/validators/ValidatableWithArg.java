@@ -1,5 +1,8 @@
 package utils.validators;
 
+/**
+ * Interface for fields validator that has argument
+ */
 public interface ValidatableWithArg extends Validatable{
-    Validatable getInstanc(String value);
+    Validatable getInstance(String value);
 }

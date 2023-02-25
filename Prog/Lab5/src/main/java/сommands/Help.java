@@ -2,6 +2,9 @@ package сommands;
 
 import java.util.HashMap;
 
+/**
+ * Help command
+ */
 public class Help extends Command{
     private final HashMap<String, Command> commands;
 
