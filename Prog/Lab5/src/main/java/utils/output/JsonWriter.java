@@ -33,11 +33,13 @@ public class JsonWriter<E extends Model> extends Writer<E> {
         FileWriter out = null;
 
         try {
-            if(System.getenv("lab5") == null) {
-                System.out.println("Не задана переменная окружения lab5. Коллекция не загружена");
-                return false;
+            String fileName = new File(".","data.json").getAbsolutePath();
+            if(System.getenv("lab5") != null) {
+                fileName = System.getenv("lab5");
+//                System.out.println("Не задана переменная окружения lab5. Коллекция не загружена");
+//                return false;
             }
-            out = new FileWriter(System.getenv("lab5"));
+            out = new FileWriter(fileName);
         } catch (FileNotFoundException e) {
             System.out.println("Не удалось открыть файл");
             return false;

@@ -78,7 +78,7 @@ public class LabWorkHandler extends CollectionHandler<PriorityQueue<LabWork>, La
 
     @Override
     public void printFieldDescending() {
-        ArrayList<Long> tunedInWorks = new ArrayList<>();
+        ArrayList<Integer> tunedInWorks = new ArrayList<>();
         for(var x : collection) {
             tunedInWorks.add(x.getTunedInWorks());
         }
@@ -110,14 +110,13 @@ public class LabWorkHandler extends CollectionHandler<PriorityQueue<LabWork>, La
     }
 
     @Override
-    public void update(LabWork obj, Long id) {
+    public LabWork getById(Long id) {
         for(var x : collection) {
             if(x.getId().equals(id)) {
-                collection.remove(x);
-                add(obj);
-                break;
+                return x;
             }
         }
+        return null;
     }
 
     @Override

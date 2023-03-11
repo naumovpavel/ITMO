@@ -93,7 +93,7 @@ public class JsonLoader<E extends Model> extends Loader<E> {
                 if(jo.isNull(field.getName())) {
                     values.put(field.getName(), Converter.convert(field.getType(), null));
                     try {
-                        Validator.validate(values.get(field.getName()), tree.getValidators().get(field.getName()));
+                        Validator.validate(values.get(field.getName()), field.getValidators());
                         continue;
                     } catch (IllegalArgumentException e) {
                         throw new IllegalArgumentException("Проблемы с полем " + field.getName() + ". " + e.getMessage());
@@ -108,9 +108,9 @@ public class JsonLoader<E extends Model> extends Loader<E> {
                     }
                 } else {
                     values.put(field.getName(), Converter.convert(field.getType(), value.toString()));
-                    if (tree.getValidators().containsKey(field.getName())) {
+                    if (field.getValidators() != null) {
                         try {
-                            Validator.validate(values.get(field.getName()), tree.getValidators().get(field.getName()));
+                            Validator.validate(values.get(field.getName()), field.getValidators());
                         } catch (IllegalArgumentException e) {
                             throw new IllegalArgumentException("Проблемы с полем " + field.getName() + ". " + e.getMessage());
                         }

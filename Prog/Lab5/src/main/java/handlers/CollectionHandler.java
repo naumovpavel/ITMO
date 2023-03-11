@@ -53,7 +53,7 @@ public abstract class CollectionHandler<T extends Collection<E>, E extends Model
     abstract public int countLess(Person obj);
     abstract public void removeLower(E obj);
 
-    abstract public void update(E obj, Long id);
+    abstract public E getById(Long id);
     abstract public boolean hasId(Long id);
     abstract public void printFieldDescending();
 

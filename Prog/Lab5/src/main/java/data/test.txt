@@ -2,15 +2,30 @@ add
 BROWN
 55
 fff
-Y
 N
 53
+N
+
 TERRIBLE
 N
 45
 fff
 Y
-
+show
+update 45
+N
+Y
+N
+33
+N
+rrrrrr
+Y
+Y
+Y
+N
+ttttt
+Y
+show
 exit
 
 

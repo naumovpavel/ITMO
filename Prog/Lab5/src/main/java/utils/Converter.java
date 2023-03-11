@@ -33,17 +33,15 @@ public class Converter {
      */
     @SuppressWarnings("unchecked")
     public static <T> T convert(Class<T> type, String value) {
-        if(value == null) {
+        if(value == null || !converters.containsKey(type.getName())) {
             return getNull(type);
         }
+
         try {
-            if (converters.containsKey(type.getName())) {
-                return (T) converters.get(type.getName()).convert(type, value);
-            }
+            return (T) killInfinity(converters.get(type.getName()).convert(type, value));
         } catch (Exception e) {
-            throw new IllegalArgumentException("Вы ввели не допустимое значение " + value);
+            throw new IllegalArgumentException("Вы ввели значение неправильного формата " + value);
         }
-        return null;
     }
 
     /**
@@ -54,21 +52,28 @@ public class Converter {
      */
     @SuppressWarnings("unchecked")
     private static <T> T getNull(Class<T> type) {
-        try {
-            if (converters.containsKey(type.getName())) {
-                return (T) converters.get(type.getName()).convert(type, null);
-            }
-        } catch (Exception e) {
+        if(type.isPrimitive()) {
             try {
-                if (converters.containsKey(type.getName())) {
-                    return (T) converters.get(type.getName()).convert(type, "0");
-                }
-            } catch (Exception ex) {
+                return (T) converters.get(type.getName()).convert(type, "0");
+            } catch (Exception e) {
                 return null;
             }
-
         }
         return null;
+    }
+
+    /**
+     * Return max value if value is infinite else return itself
+     * @return value without infinite
+     * @param value value
+     */
+    private static Object killInfinity(Object value) {
+        if(value instanceof Float && Float.isInfinite((float) value)) {
+            return Float.MAX_VALUE;
+        } else if(value instanceof Double && Double.isInfinite((double) value)) {
+            return Double.MAX_VALUE;
+        }
+        return value;
     }
 
     /**

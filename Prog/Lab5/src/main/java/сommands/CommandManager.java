@@ -5,6 +5,7 @@ import utils.input.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 
 /**
@@ -46,10 +47,10 @@ public class CommandManager {
         this.commands.put("print_field_descending_tuned_in_works", new PrintFieldDescendingTunedInWorks(handler));
         switch (mode) {
             case User -> {
-                this.commands.put("count_less_than_author", new CountLessThanAuthor(handler, new CLIBuilder()));
-                this.commands.put("remove_lower", new RemoveLower(handler, new CLIBuilder()));
-                this.commands.put("add", new Add(handler, new CLIBuilder()));
-                this.commands.put("update", new Update(handler, new CLIBuilder()));
+                this.commands.put("count_less_than_author", new CountLessThanAuthor(handler, new CLIBuilder(reader)));
+                this.commands.put("remove_lower", new RemoveLower(handler, new CLIBuilder(reader)));
+                this.commands.put("add", new Add(handler, new CLIBuilder(reader)));
+                this.commands.put("update", new Update(handler, new CLIBuilder(reader)));
             }
             case NoUser -> {
                 this.commands.put("count_less_than_author", new CountLessThanAuthor(handler, new NoUserCLIBuilder((BufferedReader) reader)));
@@ -82,6 +83,8 @@ public class CommandManager {
                 executeCommand(command.split(" "));
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+            } catch (NoSuchElementException e) {
+                System.out.println("Не удалось исполнить команду");
             }
         }
     }

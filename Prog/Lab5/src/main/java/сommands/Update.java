@@ -23,12 +23,12 @@ public class Update extends Command {
     @Override
     void execute(String[] args) throws IllegalArgumentException {
         if(args.length < 2 || args[1].isEmpty() || args[1].isBlank()) {
-            throw new IllegalArgumentException("Вы не ввелм значение id");
+            throw new IllegalArgumentException("Вы не ввели значение id");
         }
         Long id = Converter.convert(Long.class, args[1]);
         if(handler.hasId(id)) {
-            handler.update(builder.build(tree, id), id);
-            System.out.println("Объект успешно добавлен");
+            builder.update(tree, handler.getById(id));
+            System.out.println("Объект успешно обновлен");
         } else {
             System.out.println("Объекта с данным id не существует");
         }
