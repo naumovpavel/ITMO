@@ -2,9 +2,9 @@ package client.сommands;
 
 import client.utils.input.Builder;
 import common.Commands;
-import common.request.GetByIdRequest;
-import common.request.Request;
-import common.response.GerByIdResponse;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import common.utils.Converter;
 import common.utils.ModelTree;
 
@@ -25,11 +25,19 @@ public class GetById extends Command{
         }
         Long id = Converter.convert(Long.class, args[1]);
 
-        GetByIdRequest request = new GetByIdRequest(id);
-        GerByIdResponse response =  handleResponse(request);
+        Request request = new Request(Commands.GET_BY_ID).put("id", id);
+        Response response = client.sendAndReceive(request);
 
-        if(response != null) {
-            System.out.println(response.getModel());
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        if(response.get("model") == null) {
+            System.out.println(response.getAnswer());
+            return;
+        }
+
+        System.out.println(response.get("model").toString());
     }
 }

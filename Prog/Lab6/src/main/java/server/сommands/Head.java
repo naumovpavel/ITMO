@@ -1,8 +1,8 @@
 package server.сommands;
 
-import common.request.Request;
-import common.response.HeadResponse;
-import common.response.Response;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import server.handlers.CollectionHandler;
 
 /**
@@ -19,9 +19,9 @@ public class Head extends Command {
     @Override
     Response execute(Request request) throws IllegalArgumentException {
         if(handler.getHead() != null) {
-            return new HeadResponse("", true, handler.getHead());
+            return new Response("", Status.OK).put("model", handler.getHead());
         } else {
-            return new HeadResponse(false, "Коллекция пуста");
+            return new Response("Коллекция пуста", Status.OK);
         }
     }
 }

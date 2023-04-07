@@ -1,9 +1,9 @@
 package server.сommands;
 
-import common.request.RemoveLowerRequest;
-import common.request.Request;
-import common.response.RemoveLowerResponse;
-import common.response.Response;
+import common.network.Status;
+import common.models.Model;
+import common.network.Request;
+import common.network.Response;
 import server.handlers.CollectionHandler;
 import common.utils.ModelTree;
 
@@ -23,10 +23,10 @@ public class RemoveLower extends Command {
     @Override
     Response execute(Request request) {
         if(handler.getCollection().size() == 0) {
-            return new RemoveLowerResponse( false, "Коллекция пуста");
+            return new Response( "Коллекция пуста", Status.OK);
         } else {
-            handler.removeLower(((RemoveLowerRequest)request).getModel());
-            return new RemoveLowerResponse("Объекты успешно удалены", true);
+            handler.removeLower((Model)request.get("model"));
+            return new Response("Объекты успешно удалены", Status.OK);
         }
     }
 }

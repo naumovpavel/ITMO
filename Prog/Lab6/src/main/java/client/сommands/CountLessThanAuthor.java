@@ -1,10 +1,9 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.CountLessThanAuthorRequest;
-import common.request.Request;
-import common.response.CountLessThanAuthorResponse;
-import common.response.Response;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import common.utils.ModelTree;
 import client.utils.input.Builder;
 import common.models.Person;
@@ -24,11 +23,14 @@ public class CountLessThanAuthor extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        CountLessThanAuthorRequest request = new CountLessThanAuthorRequest(builder.build(tree));
-        CountLessThanAuthorResponse response =  handleResponse(request);
+        Request request = new Request(Commands.COUNT_LESS_THAN_AUTHOR).put("model", builder.build(tree));
+        Response response = client.sendAndReceive(request);
 
-        if(response != null) {
-            System.out.println(response.getCount());
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        System.out.println(response.get("count").toString());
     }
 }

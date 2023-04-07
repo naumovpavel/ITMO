@@ -1,12 +1,9 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.ClearRequest;
-import common.request.Request;
-import common.response.ClearResponse;
-import common.response.Response;
-
-import java.io.IOException;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 
 /**
  * Clear command
@@ -19,11 +16,14 @@ public class Clear extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        ClearRequest request = new ClearRequest();
-        ClearResponse response =  handleResponse(request);
+        Request request = new Request(Commands.CLEAR);
+        Response response = client.sendAndReceive(request);
 
-        if(response != null) {
-            System.out.println(response.getAnswer());
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        System.out.println(response.getAnswer());
     }
 }

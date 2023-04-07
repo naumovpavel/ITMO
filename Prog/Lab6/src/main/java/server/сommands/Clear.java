@@ -1,8 +1,8 @@
 package server.сommands;
 
-import common.request.Request;
-import common.response.ClearResponse;
-import common.response.Response;
+import common.network.Request;
+import common.network.Response;
+import common.network.Status;
 import server.handlers.CollectionHandler;
 
 /**
@@ -19,6 +19,6 @@ public class Clear extends Command {
     @Override
     Response execute(Request request) {
         handler.clear();
-        return new ClearResponse("Коллекция очищена", true);
+        return new Response("Коллекция очищена", Status.OK);
     }
 }

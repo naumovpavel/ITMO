@@ -1,8 +1,8 @@
 package server.сommands;
 
-import common.request.Request;
-import common.response.MaxByNameResponse;
-import common.response.Response;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import server.handlers.CollectionHandler;
 
 /**
@@ -19,9 +19,9 @@ public class MaxByName extends Command {
     @Override
     Response execute(Request request) {
         if(handler.getCollection().size() == 0) {
-            return new MaxByNameResponse(false, "Коллекция пуста");
+            return new Response("Коллекция пуста", Status.OK);
         } else {
-            return new MaxByNameResponse("", true, handler.maxByName());
+            return new Response("", Status.OK).put("model", handler.maxByName());
         }
     }
 }

@@ -2,8 +2,9 @@ package client.сommands;
 
 import client.network.Client;
 import client.network.TcpClient;
-import common.request.Request;
-import common.response.Response;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 
 /**
  * Abstract class of command
@@ -51,7 +52,7 @@ public abstract class Command {
     @SuppressWarnings("unchecked")
     protected <T> T handleResponse(Request request) {
         Response response = client.sendAndReceive(request);
-        if(!response.getResult()) {
+        if(response.getStatus() != Status.OK) {
             System.out.println(response.getError());
             return null;
         }

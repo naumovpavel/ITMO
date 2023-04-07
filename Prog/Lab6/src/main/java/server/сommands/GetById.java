@@ -1,9 +1,8 @@
 package server.сommands;
 
-import common.request.GetByIdRequest;
-import common.request.Request;
-import common.response.GerByIdResponse;
-import common.response.Response;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import common.utils.ModelTree;
 import server.handlers.CollectionHandler;
 
@@ -19,10 +18,10 @@ public class GetById extends Command {
 
     @Override
     public Response execute(Request request) {
-        if(handler.hasId(((GetByIdRequest)request).getId())) {
-            return new GerByIdResponse("Успешно", true, handler.getById(((GetByIdRequest) request).getId()));
+        if(handler.hasId(((Long) request.get("id")))) {
+            return new Response("Успешно", Status.OK).put("model", handler.getById((Long) request.get("id")));
         } else {
-            return new GerByIdResponse(false, "Объекта с таким id не существует");
+            return new Response("Объекта с таким id не существует", Status.OK);
         }
     }
 }

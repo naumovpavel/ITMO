@@ -74,6 +74,7 @@ public class LabWorkHandler extends CollectionHandler<PriorityQueue<LabWork>, La
 
     @Override
     public void add(Model obj) {
+        obj.autoGen();
         collection.add((LabWork) obj);
     }
 

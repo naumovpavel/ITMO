@@ -1,11 +1,9 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.HeadRequest;
-import common.request.InfoRequest;
-import common.request.Request;
-import common.response.InfoResponse;
-import server.handlers.CollectionHandler;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 
 /**
  * Info command
@@ -18,11 +16,16 @@ public class Info extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        InfoRequest request = new InfoRequest();
-        InfoResponse response = handleResponse(request);
 
-        if(response != null) {
-            System.out.println(response.getAnswer());
+        Request request = new Request(Commands.INFO);
+        Response response = client.sendAndReceive(request);
+
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        System.out.println(response.getAnswer());
+
     }
 }

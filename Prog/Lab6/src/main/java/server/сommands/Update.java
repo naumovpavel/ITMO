@@ -1,9 +1,9 @@
 package server.сommands;
 
-import common.request.Request;
-import common.request.UpdateRequest;
-import common.response.Response;
-import common.response.UpdateResponse;
+import common.network.Status;
+import common.models.Model;
+import common.network.Request;
+import common.network.Response;
 import common.utils.ModelTree;
 import server.handlers.CollectionHandler;
 
@@ -19,11 +19,11 @@ public class Update extends Command{
 
     @Override
     public Response execute(Request request) throws IllegalArgumentException {
-        boolean result = handler.update(((UpdateRequest) request).getId(), ((UpdateRequest) request).getModel());
+        boolean result = handler.update((Long) request.get("id"), (Model) request.get("model"));
         if(result) {
-            return new UpdateResponse("Объект успешно обновлен", true);
+            return new Response("Объект успешно обновлен", Status.OK);
         } else {
-            return new UpdateResponse( false, "Объекта с таким id не найдено");
+            return new Response( "Объекта с таким id не найдено", Status.OK);
         }
     }
 }

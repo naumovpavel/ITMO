@@ -1,12 +1,9 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.GetByIdRequest;
-import common.request.Request;
-import common.request.UpdateRequest;
-import common.response.GerByIdResponse;
-import common.response.Response;
-import common.response.UpdateResponse;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import common.utils.Converter;
 import common.utils.ModelTree;
 import client.utils.input.Builder;
@@ -31,18 +28,22 @@ public class Update extends Command {
         }
         Long id = Converter.convert(Long.class, args[1]);
 
-        GetByIdRequest request = new GetByIdRequest(id);
-        GerByIdResponse response =  handleResponse(request);
+        Request request = new Request(Commands.GET_BY_ID).put("id", id);
+        Response response = client.sendAndReceive(request);
 
-        if(response == null) {
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
             return;
         }
 
-        UpdateRequest updateRequest = new UpdateRequest(builder.update(tree, response.getModel()), id);
-        UpdateResponse updateResponse =  handleResponse(updateRequest);
+        Request updateRequest = new Request(Commands.UPDATE).put("id", id).put("model", builder.build(tree));
+        Response updateResponse = client.sendAndReceive(request);
 
-        if(updateResponse != null) {
-            System.out.println(response.getAnswer());
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        System.out.println(response.getAnswer());
     }
 }

@@ -1,15 +1,10 @@
 package client.сommands;
 
 import common.Commands;
-import common.models.Model;
-import common.request.Request;
-import common.request.ShowRequest;
-import common.response.Response;
-import common.response.ShowResponse;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -23,15 +18,21 @@ public class Show extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        ShowRequest request = new ShowRequest();
-        ShowResponse response =   handleResponse(request);
+        Request request = new Request(Commands.SHOW);
+        Response response = client.sendAndReceive(request);
 
-        if(response == null) {
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
             return;
         }
 
-        int m = (response.getCollection().size() + 9) / 10;
-        Object[] collection = response.getCollection().toArray();
+        if(response.get("collection") == null) {
+            System.out.println(response.getAnswer());
+            return;
+        }
+
+        Object[] collection = response.get("collection");
+        int m = (collection.length + 9) / 10;
         Scanner scanner = new Scanner(System.in);
         byte[][] commands = new byte[2][];
         commands[0] = new byte[]{27, 91, 65};
@@ -56,8 +57,13 @@ public class Show extends Command {
                 for(int j = 0; j < 10; j++) {
                     System.out.println(collection[i*10 + j]);
                 }
+            } else {
+                i--;
+                continue;
             }
             System.out.printf("[%d / %d]\n", i+1, m);
         }
+
     }
 }
+

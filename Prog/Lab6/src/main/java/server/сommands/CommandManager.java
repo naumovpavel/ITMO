@@ -1,10 +1,10 @@
 package server.сommands;
 
 import common.Commands;
-import common.request.Request;
-import common.response.Response;
+import common.network.Request;
+import common.network.Response;
+import common.network.Status;
 import server.handlers.CollectionHandler;
-import server.utils.input.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -56,7 +56,7 @@ public class CommandManager {
             try {
                 Request request = new Request(Commands.valueOf(command.toUpperCase()));
                 Response response = executeCommand(request);
-                if(response.getResult()) {
+                if(response.getStatus() == Status.OK) {
                     System.out.println(response.getAnswer());
                 } else {
                     System.out.println(response.getError());

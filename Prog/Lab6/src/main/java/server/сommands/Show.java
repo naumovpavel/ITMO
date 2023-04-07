@@ -1,12 +1,9 @@
 package server.сommands;
 
-import common.models.Model;
-import common.request.Request;
-import common.response.Response;
-import common.response.ShowResponse;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import server.handlers.CollectionHandler;
-
-import java.util.Collection;
 
 /**
  * Show command
@@ -23,9 +20,9 @@ public class Show extends Command {
     @Override
     Response execute(Request request) throws IllegalArgumentException {
         if(handler.getCollection().size() == 0) {
-            return new ShowResponse(false, "Коллекция пуста");
+            return new Response("Коллекция пуста", Status.OK);
         }
 
-        return new ShowResponse("", true, (Collection<Model>) handler.getCollection());
+        return new Response("", Status.OK).put("collection", handler.getCollection().toArray());
     }
 }

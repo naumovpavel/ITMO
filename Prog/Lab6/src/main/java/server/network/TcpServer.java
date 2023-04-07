@@ -2,32 +2,33 @@ package server.network;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import client.network.Client;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.LoggerFactory;
 import server.сommands.CommandManager;
-import common.request.Request;
-import common.response.Response;
+import common.network.Request;
+import common.network.Response;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
 import static java.nio.channels.SelectionKey.OP_READ;
 import static java.nio.channels.SelectionKey.OP_WRITE;
 
+/**
+ * TcpServer class
+ */
 public class TcpServer extends Server {
     private ServerSocketChannel servChan;
     private CommandManager commandManager;
-    private final HashMap<SocketChannel, Response> queue = new HashMap<>();
+    private final HashMap<SocketChannel, MutablePair<Integer, byte[]>> queue = new HashMap<>();
     private static final Logger logger = (Logger) LoggerFactory.getLogger("server.network");
     private Selector selector;
 
@@ -56,27 +57,31 @@ public class TcpServer extends Server {
                 selector.select(100);
                 commandManager.startLocalExecuting();
                 Set<SelectionKey> keys = selector.selectedKeys();
+
                 for (var it = keys.iterator(); it.hasNext(); ) {
                     SelectionKey key = it.next();
                     it.remove();
+
                     try {
                         if (key.isValid()) {
                             if (key.isAcceptable()) {
                                 accept(key);
                             }
+
                             if (key.isReadable()) {
                                 Request request = read(key);
                                 Response response = commandManager.executeCommand(request);
-
-                                queue.put((SocketChannel) key.channel(), response);
+                                MutablePair<Integer, byte[]>  pair= new MutablePair<>(0, ArrayUtils.toPrimitive(objectToByArray(response)));
+                                queue.put((SocketChannel) key.channel(), pair);
                             }
+
                             if (key.isWritable()) {
                                 if (!queue.containsKey((SocketChannel) key.channel())) {
                                     key.channel().register(selector, OP_READ);
                                 }
 
-                                Response response = queue.get((SocketChannel) key.channel());
-                                send(response, key);
+                                MutablePair<Integer, byte[]>  pair = queue.get((SocketChannel) key.channel());
+                                send(pair, key);
                             }
                         } else {
                             key.cancel();
@@ -86,8 +91,6 @@ public class TcpServer extends Server {
                         ((SocketChannel) key.channel()).socket().close();
                         key.cancel();
                     }
-
-                    commandManager.startLocalExecuting();
                 }
             } catch (IOException | ClassNotFoundException e) {
                 logger.warn(e.getMessage());
@@ -109,55 +112,50 @@ public class TcpServer extends Server {
     }
 
     @Override
-    protected void send(Response response, SelectionKey key) throws IOException {
+    protected void send(MutablePair<Integer, byte[]> pair, SelectionKey key) throws IOException {
         SocketChannel sock = (SocketChannel) key.channel();
-        byte[] bytes;
-
-        if (queue.containsKey(sock)) {
-            bytes = ArrayUtils.toPrimitive(objectToByArray(queue.get(sock)));
-        } else {
-            key.cancel();
-            return;
-        }
+        byte[] bytes = pair.right;
+        int i = pair.left;
 
         int n = (bytes.length + DATA_SIZE - 1) / DATA_SIZE;
-        sendSize(n, sock);
-        for (int i = 0; i < n; i++) {
-            byte[] buf = Arrays.copyOfRange(bytes, i * DATA_SIZE, (i + 1) * DATA_SIZE);
+
+        for (; i < n; i++) {
+            byte[] buf = Arrays.copyOfRange(bytes, i * DATA_SIZE, (i + 1) * DATA_SIZE + 1);
 
             if (i != n - 1) {
-                buf = ArrayUtils.add(buf, (byte) 0);
+                buf[PACKAGE_SIZE - 1] = 0;
             } else {
-                buf = ArrayUtils.add(buf, (byte) 1);
+                buf[PACKAGE_SIZE - 1] = 1;
             }
 
             int m = sock.write(ByteBuffer.wrap(buf));
             if(m == 0) {
-                throw new IOException();
+                pair.left = i;
+                sock.register(selector, OP_WRITE);
+                return;
             }
         }
+
         sock.register(selector, OP_READ);
         logger.info("{} bytes sent to {}", bytes.length, sock.getRemoteAddress());
     }
 
+
+    @Override
     protected Request read(SelectionKey key) throws IOException, ClassNotFoundException {
         SocketChannel sock = (SocketChannel) key.channel();
-        ByteBuffer byteBuffer = ByteBuffer.allocate(PACKAGE_SIZE);
         ArrayList<Byte> bytes = new ArrayList<>();
+        byte[] buf = new byte[PACKAGE_SIZE];
 
-        while (true)  {
-            byte[] buf = new byte[PACKAGE_SIZE];
+        do {
             int n = sock.read(ByteBuffer.wrap(buf));
-            if(n == -1) {
+            if (n == -1) {
                 throw new IOException();
             }
             for (int i = 0; i < DATA_SIZE; i++) {
                 bytes.add(buf[i]);
             }
-            if (buf[PACKAGE_SIZE - 1] == 1) {
-                break;
-            }
-        }
+        } while (buf[PACKAGE_SIZE - 1] != 1);
 
         if (bytes.size() == 0)
             throw new IOException();
@@ -166,13 +164,5 @@ public class TcpServer extends Server {
         logger.info("{} read from {}", bytes.size(), sock.getRemoteAddress());
         Byte[] res = new Byte[bytes.size()];
         return (Request) objectFromArray(bytes.toArray(res));
-    }
-
-    protected void sendSize(int n, SocketChannel sock) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(32);
-        buffer.put(Integer.toBinaryString(n).getBytes());
-        buffer.flip();
-        buffer.limit(32);
-        sock.write(buffer);
     }
 }

@@ -1,12 +1,11 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.HeadRequest;
-import common.request.PrintFieldDescendingTunedInWorksRequest;
-import common.request.Request;
-import common.response.HeadResponse;
-import common.response.PrintFieldDescendingTunedInWorksResponse;
-import server.handlers.CollectionHandler;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
+
+import java.util.Collection;
 
 /**
  * Print field descending tuned in works  command
@@ -19,13 +18,17 @@ public class PrintFieldDescendingTunedInWorks extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        PrintFieldDescendingTunedInWorksRequest request = new PrintFieldDescendingTunedInWorksRequest();
-        PrintFieldDescendingTunedInWorksResponse response =  handleResponse(request);
+        Request request = new Request(Commands.PRINT_FIELD_DESCENDING_TUNED_IN_WORKS);
+        Response response = client.sendAndReceive(request);
 
-        if(response == null) {
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
             return;
         }
-        for(var x : response.getArray()) {
+
+        Collection<Integer> array = response.get("array");
+
+        for(var x : array) {
             System.out.println(x);
         }
     }

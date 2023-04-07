@@ -1,12 +1,10 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.RemoveByIdRequest;
-import common.request.Request;
-import common.response.CountLessThanAuthorResponse;
-import common.response.RemoveByIdResponse;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import common.utils.Converter;
-import server.handlers.CollectionHandler;
 
 /**
  * Remove by id command
@@ -23,11 +21,14 @@ public class RemoveById extends Command {
             throw new IllegalArgumentException("Вы не ввели значение id");
         }
         Long id = Converter.convert(Long.class, args[1]);
-        RemoveByIdRequest request = new RemoveByIdRequest(id);
-        RemoveByIdResponse response =  handleResponse(request);
+        Request request = new Request(Commands.REMOVE_BY_ID).put("id", id);
+        Response response = client.sendAndReceive(request);
 
-        if(response != null) {
-            System.out.println(response.getAnswer());
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        System.out.println(response.getAnswer());
     }
 }

@@ -1,13 +1,10 @@
 package server.сommands;
 
-import common.request.CountLessThanAuthorRequest;
-import common.request.Request;
-import common.response.CountLessThanAuthorResponse;
-import common.response.Response;
-import common.utils.ModelTree;
+import common.network.Request;
+import common.network.Response;
+import common.network.Status;
 import server.handlers.CollectionHandler;
 import common.models.Person;
-import common.utils.ModelTree;
 
 /**
  * Count less than author command
@@ -22,6 +19,6 @@ public class CountLessThanAuthor extends Command {
 
     @Override
     Response execute(Request request) {
-        return new CountLessThanAuthorResponse("", true, handler.countLess(((Person) ((CountLessThanAuthorRequest)request).getModel())));
+        return new Response("", Status.OK).put("count", handler.countLess(((Person) request.get("model"))));
     }
 }

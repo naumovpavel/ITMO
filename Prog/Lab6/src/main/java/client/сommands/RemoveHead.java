@@ -1,12 +1,9 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.HeadRequest;
-import common.request.RemoveHeadRequest;
-import common.request.Request;
-import common.response.HeadResponse;
-import common.response.RemoveHeadResponse;
-import server.handlers.CollectionHandler;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 
 /**
  * Remove head command
@@ -19,11 +16,14 @@ public class RemoveHead extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        RemoveHeadRequest request = new RemoveHeadRequest();
-        RemoveHeadResponse response =  handleResponse(request);
+        Request request = new Request(Commands.REMOVE_HEAD);
+        Response response = client.sendAndReceive(request);
 
-        if(response != null) {
-            System.out.println(response.getModel());
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        System.out.println(response.get("model").toString());
     }
 }

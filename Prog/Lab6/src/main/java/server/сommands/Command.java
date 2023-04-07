@@ -1,7 +1,7 @@
 package server.сommands;
 
-import common.request.Request;
-import common.response.Response;
+import common.network.Request;
+import common.network.Response;
 
 /**
  * Abstract class of command

@@ -1,7 +1,8 @@
 package server.сommands;
 
-import common.request.Request;
-import common.response.Response;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import server.handlers.CollectionHandler;
 
 /**
@@ -18,7 +19,7 @@ public class Save extends Command {
     @Override
     Response execute(Request request) throws IllegalArgumentException {
         if(handler.save())
-            return new Response("Коллекция успешно сохранена", true);
-        return new Response(false, "Возникли ошибки при сохранение");
+            return new Response("Коллекция успешно сохранена", Status.OK);
+        return new Response("Возникли ошибки при сохранение", Status.OK);
     }
 }

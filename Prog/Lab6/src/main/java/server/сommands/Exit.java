@@ -1,9 +1,9 @@
 package server.сommands;
 
-import common.request.Request;
-import common.response.Response;
+import common.network.Request;
+import common.network.Response;
+import common.network.Status;
 import server.handlers.CollectionHandler;
-import server.сommands.Command;
 
 /**
  * Exit command
@@ -22,6 +22,6 @@ public class Exit extends Command {
             System.out.println("adiós amigo");
             System.exit(0);
         }
-        return new Response(false, "Возникли ошибки при сохранение");
+        return new Response("Возникли ошибки при сохранение", Status.ERROR);
     }
 }

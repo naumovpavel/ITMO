@@ -1,8 +1,9 @@
 package client.network;
 
-import common.request.InfoRequest;
-import common.request.Request;
-import common.response.Response;
+import common.Commands;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
@@ -34,7 +35,7 @@ public class TcpClient extends Client{
             send(request);
             response = receive();
         } catch (IOException | ClassNotFoundException e) {
-            response = new Response( false, "Сервер временно не доступен, попробуйте позже");
+            response = new Response( "Сервер временно не доступен, попробуйте позже", Status.ERROR);
             socket = null;
         }
         return response;
@@ -45,15 +46,17 @@ public class TcpClient extends Client{
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         new ObjectOutputStream(byteOut).writeObject(request);
         byte[] bytes = byteOut.toByteArray();
-
         int n = (bytes.length + DATA_SIZE - 1) / DATA_SIZE;
+
         for (int i = 0; i < n; i++) {
-            byte[] buf = Arrays.copyOfRange(bytes, i*DATA_SIZE, (i+1)*DATA_SIZE);
-            if(i != n-1) {
-                buf = ArrayUtils.add(buf, (byte) 0);
+            byte[] buf = Arrays.copyOfRange(bytes, i*DATA_SIZE, (i+1)*DATA_SIZE + 1);
+
+            if (i != n - 1) {
+                buf[PACKAGE_SIZE - 1] = 0;
             } else {
-                buf = ArrayUtils.add(buf, (byte) 1);
+                buf[PACKAGE_SIZE - 1] = 1;
             }
+
             outputStream.write(buf);
             outputStream.flush();
         }
@@ -62,46 +65,23 @@ public class TcpClient extends Client{
     @Override
     protected Response receive() throws IOException, ClassNotFoundException {
         ArrayList<Byte> bytes = new ArrayList<>();
-        int n = readSize();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, n*PACKAGE_SIZE);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 16*PACKAGE_SIZE);
+        byte[] buf = new byte[PACKAGE_SIZE];
 
-        while (true) {
-            byte[] buf = new byte[PACKAGE_SIZE];
+        do {
             int m = bufferedInputStream.read(buf);
-            if(m == -1 || m != PACKAGE_SIZE) {
+            if (m == -1 || m != PACKAGE_SIZE) {
                 throw new IOException("Ошибка при чтение ответа от сервера");
             }
             for (int j = 0; j < DATA_SIZE; j++) {
                 bytes.add(buf[j]);
             }
-            if(buf[PACKAGE_SIZE-1] == 1) {
-                break;
-            }
-        }
+        } while (buf[PACKAGE_SIZE - 1] != 1);
 
         Byte[] res = new Byte[bytes.size()];
         res = bytes.toArray(res);
         ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(ArrayUtils.toPrimitive(res)));
         return (Response) in.readObject();
-    }
-
-    protected int readSize() throws IOException {
-        byte[] buf = new byte[32];
-        int m = inputStream.read(buf);
-
-        if(m == -1) {
-            throw new IOException();
-        }
-
-        int n = 0;
-        for(int i = 0; i< 32; i++) {
-            if(buf[i] == 0) {
-                break;
-            } else if(buf[i] == 49) {
-                n += (1 << i);
-            }
-        }
-        return n;
     }
 
     public void connect() throws IOException {
@@ -136,7 +116,7 @@ public class TcpClient extends Client{
         if(socket == null) {
             return true;
         }
-        Response response = sendAndReceive(new InfoRequest());
-        return !response.getResult();
+        Response response = sendAndReceive(new Request(Commands.INFO));
+        return response.getStatus() != Status.OK;
     }
 }

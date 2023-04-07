@@ -1,17 +1,11 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.CountLessThanAuthorRequest;
-import common.request.RemoveByIdRequest;
-import common.request.RemoveLowerRequest;
-import common.request.Request;
-import common.response.CountLessThanAuthorResponse;
-import common.response.RemoveByIdResponse;
-import common.response.RemoveHeadResponse;
-import common.response.RemoveLowerResponse;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import common.utils.ModelTree;
 import client.utils.input.Builder;
-import server.handlers.CollectionHandler;
 
 /**
  * Remove lower command
@@ -28,11 +22,14 @@ public class RemoveLower extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        RemoveLowerRequest request = new RemoveLowerRequest(builder.build(tree));
-        RemoveLowerResponse response =  handleResponse(request);
+        Request request = new Request(Commands.REMOVE_LOWER).put("model", builder.build(tree));
+        Response response = client.sendAndReceive(request);
 
-        if(response != null) {
-            System.out.println(response.getAnswer());
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        System.out.println(response.getAnswer());
     }
 }

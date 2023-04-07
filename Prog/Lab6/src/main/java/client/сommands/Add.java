@@ -1,10 +1,9 @@
 package client.сommands;
 
 import common.Commands;
-import common.request.AddRequest;
-import common.request.Request;
-import common.response.AddResponse;
-import common.response.Response;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import common.utils.ModelTree;
 import client.utils.input.Builder;
 
@@ -23,11 +22,14 @@ public class Add extends Command {
 
     @Override
     void execute(String[] args) throws IllegalArgumentException {
-        AddRequest request = new AddRequest(builder.build(tree));
-        AddResponse response = handleResponse(request);
+        Request request = new Request(Commands.ADD).put("model", builder.build(tree));
+        Response response = client.sendAndReceive(request);
 
-        if(response != null) {
-            System.out.println(response.getAnswer());
+        if(response.getStatus() != Status.OK) {
+            System.out.println(response.getError());
+            return;
         }
+
+        System.out.println(response.getAnswer());
     }
 }

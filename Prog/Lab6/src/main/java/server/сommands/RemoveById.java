@@ -1,11 +1,9 @@
 package server.сommands;
 
-import common.request.RemoveByIdRequest;
-import common.request.Request;
-import common.response.RemoveByIdResponse;
-import common.response.Response;
+import common.network.Status;
+import common.network.Request;
+import common.network.Response;
 import server.handlers.CollectionHandler;
-import common.utils.Converter;
 
 /**
  * Remove by id command
@@ -20,10 +18,10 @@ public class RemoveById extends Command {
 
     @Override
     Response execute(Request request) {
-        if(handler.removeById(((RemoveByIdRequest) request).getId())) {
-            return new RemoveByIdResponse("Элемент успешно удален", true);
+        if(handler.removeById((Long) request.get("id"))) {
+            return new Response("Элемент успешно удален", Status.OK);
         } else {
-            return new RemoveByIdResponse(false, "Элемента с таким id не было в коллекции");
+            return new Response("Элемента с таким id не было в коллекции", Status.OK);
         }
     }
 }

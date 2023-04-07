@@ -1,10 +1,9 @@
 package server.сommands;
 
-import client.utils.input.Builder;
-import common.request.AddRequest;
-import common.request.Request;
-import common.response.AddResponse;
-import common.response.Response;
+import common.models.Model;
+import common.network.Request;
+import common.network.Response;
+import common.network.Status;
 import server.handlers.CollectionHandler;
 import common.utils.ModelTree;
 
@@ -23,8 +22,8 @@ public class Add extends Command {
 
     @Override
     public Response execute(Request request) {
-        ((AddRequest)request).getModel().autoGen();
-        handler.add(((AddRequest) request).getModel());
-        return new AddResponse("Объект успешно добавлен", true);
+        Model model = request.get("model");
+        handler.add(model);
+        return new Response("Объект успешно добавлен", Status.OK);
     }
 }
