@@ -1,0 +1,13 @@
+CREATE TYPE Color as enum (
+    'BLACK',
+    'ORANGE',
+    'WHITE',
+    'BROWN'
+);
+
+CREATE TYPE Difficulty as enum (
+    'NORMAL',
+    'HARD',
+    'INSANE',
+    'TERRIBLE'
+);

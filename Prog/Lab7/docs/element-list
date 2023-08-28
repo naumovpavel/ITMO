@@ -1,0 +1,15 @@
+client.main
+client.network
+client.utils.input
+client.сommands
+common
+common.models
+common.network
+common.utils
+common.utils.validators
+server.handlers
+server.main
+server.network
+server.utils.input
+server.utils.output
+server.сommands
