@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ice="http://www.icefaces.org/icefaces/components" xmlns:ace="http://www.icefaces.org/icefaces/components"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html" />
+        <h:outputStylesheet library="css" name="style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Лаба 3</title>
+    </h:head>
+    <h:body>
+        <h:outputScript library="js" name="script.js" />
+        <div class="header">
+            <div class="info">
+                <h1>Лабораторная работа 3, вар 90999</h1>
+                <h2>Наумов Павел Викторович, P3218</h2>
+            </div>
+        </div>
+        <div class="row">
+
+            <div id = "form">
+                <h:form class="form">
+                    <div class="fields">
+                        <div class="error">
+                            <span id="error-message"/>
+                        </div>
+
+                        <div class="x">
+                            <label for="X-Input">Выберите X:</label>
+                            <ice:sliderEntry style="width: 250px;" id="X-Input" value="#{pointBean.x}" min="-2" max="2" stepPercent="25">
+                                <ice:ajax execute="@this" render="@form"/>
+                            </ice:sliderEntry>
+                        </div>
+                        <div class="y">
+                            <label for="Y-Input">Выберите Y:</label>
+                            <h:inputText value="#{pointBean.y}" name="Y-Input" maxlength="50" id="Y-Input" a:placeholder="Number from -3 to 5...">
+                                <f:validateDoubleRange minimum="-3" maximum="5"/>
+                                <f:validateRequired/>
+                                <f:ajax execute="@this" render="@form"/>
+                            </h:inputText>
+                            <h:message for="Y-Input" id="Y-Input-error" class="error" style="max-width: 75px"/>
+                        </div>
+                        <div class="r">
+                            <label>Выберите R:</label>
+                            <ace:panel>
+                                <ace:checkboxButtons id="checkboxButtons" mutuallyExclusive="true" value="#{pointBean.selectedR}" converter="javax.faces.Integer">
+                                    <f:selectItem itemLabel="1" itemValue="1"/>
+                                    <f:selectItem itemLabel="2" itemValue="2"/>
+                                    <f:selectItem itemLabel="3" itemValue="3"/>
+                                    <f:selectItem itemLabel="4" itemValue="4"/>
+                                    <f:selectItem itemLabel="5" itemValue="5"/>
+                                    <ace:ajax execute="@this" render="@form"/>
+                                </ace:checkboxButtons>
+                            </ace:panel>
+                        </div>
+                        <div class="subbmit">
+                            <h:commandButton id="subbmit" value="Проверить">
+                                <f:ajax execute="@form" listener="#{resultsBean.addPoint(pointBean)}" render="@form resultTable drawPoints" />
+                            </h:commandButton>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        <div id="plot">
+            <span>2</span>
+            <svg xmlns="http://www.w3.org/2000/svg" id="graph">
+                <line x1="0" y1="150" x2="300" y2="150" stroke="#000720"></line>
+                <line x1="150" y1="0" x2="150" y2="300" stroke="#000720"></line>
+                <line x1="270" y1="148" x2="270" y2="152" stroke="#000720"></line>
+                <text x="265" y="140">R</text>
+                <line x1="210" y1="148" x2="210" y2="152" stroke="#000720"></line>
+                <text x="200" y="140">R/2</text>
+                <line x1="90" y1="148" x2="90" y2="152" stroke="#000720"></line>
+                <text x="75" y="140">-R/2</text>
+                <line x1="30" y1="148" x2="30" y2="152" stroke="#000720"></line>
+                <text x="20" y="140">-R</text>
+                <line x1="148" y1="30" x2="152" y2="30" stroke="#000720"></line>
+                <text x="156" y="35">R</text>
+                <line x1="148" y1="90" x2="152" y2="90" stroke="#000720"></line>
+                <text x="156" y="95">R/2</text>
+                <line x1="148" y1="210" x2="152" y2="210" stroke="#000720"></line>
+                <text x="156" y="215">-R/2</text>
+                <line x1="148" y1="270" x2="152" y2="270" stroke="#000720"></line>
+                <text x="156" y="275">-R</text>
+
+
+                <polygon points="90,150 150,150 150,270" fill-opacity="0.4" stroke="navy" fill="blue"></polygon>
+                <rect x="150" y="150" width="120" height="60" fill-opacity="0.4" stroke="navy" fill="blue"></rect>
+                <path d="M 150 150 L 210 150 C 210 160 220 90 150 90 Z" fill-opacity="0.4" stroke="navy" fill="blue"></path>
+                <circle id="pointer" cx="150" cy="150"></circle>
+            </svg>
+        </div>
+        </div>
+        <div class="row">
+            <div class="results">
+<!--                <ui:repeat id = "drawPoint" value="#{resultsBean.results}" var="result">-->
+<!--                    <h:outputScript>-->
+<!--                        drawPoint('#{result.x}', '#{result.y}', '#{result.r}', '#{result.inArea}');-->
+<!--                    </h:outputScript>-->
+<!--                </ui:repeat>-->
+                <h:panelGroup id = "drawPoints">
+                    <c:forEach items="#{resultsBean.results}" var="result">
+                        <h:outputScript>
+                            drawPoint('#{result.x}', '#{result.y}', '#{result.r}', '#{result.inArea}');
+                        </h:outputScript>
+                    </c:forEach>
+                </h:panelGroup>
+                <h:dataTable id = "resultTable" value="#{resultsBean.results}" var="result">
+                    <h:column>
+                        <f:facet name = "header">X</f:facet>
+                        #{result.x}
+                    </h:column>
+                    <h:column>
+                        <f:facet name = "header">Y</f:facet>
+                        #{result.y}
+                    </h:column>
+                    <h:column>
+                        <f:facet name = "header">R</f:facet>
+                        #{result.r}
+                    </h:column>
+                    <h:column>
+                        <f:facet name = "header">Res</f:facet>
+                        #{result.inArea ? "Есть пробите!" : "Рекашет!"}
+                    </h:column>
+                </h:dataTable>
+            </div>
+            <div class="index-menu">
+                <h:link outcome="goToIndex">
+                    To main page
+                </h:link>
+            </div>
+        </div>
+    </h:body>
+</html>

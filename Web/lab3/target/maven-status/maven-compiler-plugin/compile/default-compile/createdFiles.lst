@@ -1,0 +1,4 @@
+com\wift\lab3\db\Point\postgres\PointDAO.class
+com\wift\lab3\model\PointBean.class
+com\wift\lab3\model\ResultsBean.class
+com\wift\lab3\db\Point\PointDAO.class
