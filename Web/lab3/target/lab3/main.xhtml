@@ -36,6 +36,10 @@
                             <ice:sliderEntry style="width: 250px;" id="X-Input" value="#{pointBean.x}" min="-2" max="2" stepPercent="25">
                                 <ice:ajax execute="@this" render="@form"/>
                             </ice:sliderEntry>
+                            <h:inputText value="#{pointBean.x}" name="X-Input-hidden" maxlength="50" id="X-Input-hidden" disabled="false">
+                                <f:validateDoubleRange minimum="-2" maximum="2"/>
+                                <f:ajax execute="@this" render="@form"/>
+                            </h:inputText>
                         </div>
                         <div class="y">
                             <label for="Y-Input">Выберите Y:</label>

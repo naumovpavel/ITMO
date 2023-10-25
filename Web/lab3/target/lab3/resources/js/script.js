@@ -19,7 +19,7 @@ window.onload = function () {
                 let planeCoords = transformSvgToPlane(svgPoint.x, svgPoint.y, r);
                 console.log(planeCoords)
                 sendReq(
-                    (Math.floor(planeCoords.x * 2)/2).toFixed(1), planeCoords.y.toFixed(1)
+                    planeCoords.x.toFixed(1), planeCoords.y.toFixed(1)
                 );
             }
     });
@@ -33,9 +33,15 @@ function sendReq(x, y) {
     if (inputElement) {
         inputElement.value = y;
     }
+
+    var inputElement = document.getElementById("j_idt9:X-Input-hidden");
+    if (inputElement) {
+        inputElement.value = x;
+    }
+
     var submitButton = document.getElementById('j_idt9:subbmit');
 
-    setAriaValueNowToX(x);
+    //setAriaValueNowToX(x);
     submitButton.click();
 }
 
@@ -86,7 +92,7 @@ function processTable() {
     for (let item of table.rows) {
         let x = parseFloat(item.children[0].innerText.trim());
         let y = parseFloat(item.children[1].innerText.trim());
-        let r = parseFloat(item.children[2].innerText.trim());
+        //let r = parseFloat(item.children[2].innerText.trim());
         if (isNaN(x) || isNaN(y) || isNaN(r)) continue;
 
         let result = item.children[3].innerText.trim() === "Есть пробите!";
@@ -139,6 +145,20 @@ function checkR() {
 
 function drawPoint(x, y, r, result) {
     clearError();
+    result = "false";
+    if(x < 0 && y < 0) {
+        if(-2*x - y <= r && 2*x >= -r && y >= -r) {
+            result = "true";
+        }
+    } else if (x>= 0 && y >= 0) {
+        if( 4*(x*x + y*y) <= r) {
+            result = "true";
+        }
+    } else if (x>=0 && y <= 0) {
+        if( x <= r && 2*y >= -r) {
+            result = "true";
+        }
+    }
     console.log(x,y,r,result, result === "true" ? 1 : 2);
     let svg = document.getElementById("graph");
     console.log(svg);
