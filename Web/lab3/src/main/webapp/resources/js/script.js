@@ -145,21 +145,20 @@ function checkR() {
 
 function drawPoint(x, y, r, result) {
     clearError();
-    result = "false";
+    result = false;
     if(x < 0 && y < 0) {
         if(-2*x - y <= r && 2*x >= -r && y >= -r) {
-            result = "true";
+            result = true;
         }
     } else if (x>= 0 && y >= 0) {
         if( 4*(x*x + y*y) <= r) {
-            result = "true";
+            result = true;
         }
     } else if (x>=0 && y <= 0) {
         if( x <= r && 2*y >= -r) {
-            result = "true";
+            result = true;
         }
     }
-    console.log(x,y,r,result, result === "true" ? 1 : 2);
     let svg = document.getElementById("graph");
     console.log(svg);
     let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -168,7 +167,7 @@ function drawPoint(x, y, r, result) {
     circle.setAttribute("r", 3);
     circle.setAttribute("class", "hitPoint");
     console.log(x, y, r, result, "drawPoint");
-    if(result === "true") {
+    if(result === true) {
         circle.setAttribute("fill", "#1ffd01");
     } else {
         console.log(x,y,r,result, "hui");
