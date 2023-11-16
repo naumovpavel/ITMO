@@ -109,9 +109,12 @@
 <!--                    </h:outputScript>-->
 <!--                </ui:repeat>-->
                 <h:panelGroup id = "drawPoints">
+                    <h:outputScript>
+                        //clearPoints();
+                    </h:outputScript>
                     <c:forEach items="#{resultsBean.results}" var="result">
                         <h:outputScript>
-                            drawPoint('#{result.x}', '#{result.y}', '#{result.r}', '#{result.inArea}');
+                            drawPoint('#{result.x}', '#{result.y}', '#{result.inArea}');
                         </h:outputScript>
                     </c:forEach>
                 </h:panelGroup>

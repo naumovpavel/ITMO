@@ -51,9 +51,10 @@ public class PointDAO implements com.wift.lab3.db.Point.PointDAO {
     }
 
     @Override
-    public List<PointBean> getAllPoints() {
+    public List<PointBean> getAllPoints(String sessionId) {
         try(java.sql.Connection connection = pool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("select * from points");
+            PreparedStatement statement = connection.prepareStatement("select * from points where session_id = ?");
+            statement.setString(1, sessionId);
             ResultSet resultSet = statement.executeQuery();
             List<PointBean> results = new ArrayList<>();
             while (resultSet.next()) {
@@ -62,12 +63,13 @@ public class PointDAO implements com.wift.lab3.db.Point.PointDAO {
                 point.setY(resultSet.getDouble("y"));
                 point.setR(resultSet.getInt("r"));
                 point.setInArea(resultSet.getBoolean("is_in_area"));
+                point.setSessionId(resultSet.getString("session_id"));
                 results.add(point);
             }
             return results;
         }  catch (SQLException e) {
-            System.out.println(e.getMessage());
-            System.out.println(Arrays.toString(e.getStackTrace()));
+            //System.out.println(e.getMessage());
+            //System.out.println(Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -76,15 +78,16 @@ public class PointDAO implements com.wift.lab3.db.Point.PointDAO {
     public void addPoint(PointBean point) {
 
         try(java.sql.Connection connection = pool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("insert into points (x, y, r, is_in_area) values(?,?,?,?)");
+            PreparedStatement statement = connection.prepareStatement("insert into points (x, y, r, is_in_area, session_id) values(?,?,?,?,?)");
             statement.setDouble(1, point.getX());
             statement.setDouble(2, point.getY());
             statement.setInt(3, point.getR());
             statement.setBoolean(4, point.isInArea());
+            statement.setString(5, point.getSessionId());
             statement.execute();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            //System.out.println(e.getMessage());
+            //System.out.println(e.getStackTrace());
         }
     }
 }

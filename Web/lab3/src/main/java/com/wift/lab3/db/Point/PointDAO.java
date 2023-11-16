@@ -6,6 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface PointDAO {
-    List<PointBean> getAllPoints();
+    List<PointBean> getAllPoints(String sessionId);
     void addPoint(PointBean point);
 }

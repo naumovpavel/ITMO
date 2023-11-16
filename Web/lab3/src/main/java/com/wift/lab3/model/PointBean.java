@@ -2,6 +2,10 @@ package com.wift.lab3.model;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +17,12 @@ public class PointBean implements Serializable {
     private int r;
     private boolean isInArea;
     private List<Integer> selectedR;
+    private String sessionId;
 
     public PointBean() {
         selectedR = new ArrayList<>();
         selectedR.add(1);
+        sessionId = getSessionId();
     }
 
     public boolean isInArea() {
@@ -69,6 +75,25 @@ public class PointBean implements Serializable {
 
     public void setInArea(boolean inArea) {
         isInArea = inArea;
+    }
+
+    public String getSessionId() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        // Get the ExternalContext
+        ExternalContext externalContext = facesContext.getExternalContext();
+
+        // Get the HttpServletRequest
+        HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+
+        // Get the HttpSession
+        HttpSession session = request.getSession();
+
+        return session.getId();
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     @Override

@@ -1,10 +1,14 @@
-let r = 1;
+let r_cur = 1;
 
 window.onload = function () {
     var container = document.querySelector(".ice-checkboxbutton-checked").closest(".ice-checkboxbutton");
     var label = container.querySelector("label");
     var value = label.textContent.trim();
     r = value;
+    //var buttons = document.querySelectorAll(".ice-checkboxbutton button");
+    for (let i = 0; i < 5; i++) {
+        document.getElementById("j_idt9:checkboxButtons:"+i+"_button").addEventListener("click", handleCheckboxButtonClick);
+    }
     svg = document.getElementById("graph");
     svg.addEventListener("click", (event) => {
             let point = svg.createSVGPoint();
@@ -41,40 +45,19 @@ function sendReq(x, y) {
 
     var submitButton = document.getElementById('j_idt9:subbmit');
 
-    //setAriaValueNowToX(x);
     submitButton.click();
 }
 
-function setAriaValueNowToX(x) {
-    var sliderElement = document.getElementById("j_idt9:X-Input_handle");
-    document.getElementById("j_idt9:X-Input_hidden").setAttribute("value", x);
-
-    if (sliderElement) {
-        sliderElement.setAttribute("aria-valuenow", x.toString());
-        var min = parseFloat(sliderElement.getAttribute("aria-valuemin"));
-        var max = parseFloat(sliderElement.getAttribute("aria-valuemax"));
-        var position = ((x - min) / (max - min)) * 100 + "%";
-        sliderElement.style.left = position;
-    }
-}
-
 function handleCheckboxButtonClick(event) {
-    // Get the clicked button element
+    console.log("event but");
     var button = event.target;
-
-    // Traverse up the DOM to find the parent container (div) that contains the label
     var container = button.closest(".ice-checkboxbutton");
-
-    // Find the associated label element within the container
     var label = container.querySelector("label");
-
-    // Get the value from the label
     var value = label.textContent.trim();
-    r = value;
+    r_cur = value;
     clearPoints();
     processTable();
 
-    // Print the value to the console
     console.log("Clicked button value: " + value);
 }
 
@@ -92,21 +75,13 @@ function processTable() {
     for (let item of table.rows) {
         let x = parseFloat(item.children[0].innerText.trim());
         let y = parseFloat(item.children[1].innerText.trim());
-        //let r = parseFloat(item.children[2].innerText.trim());
+        let r = parseFloat(item.children[2].innerText.trim());
         if (isNaN(x) || isNaN(y) || isNaN(r)) continue;
 
         let result = item.children[3].innerText.trim() === "Есть пробите!";
-        drawPoint(x, y, r, result ? "true" : "false");
+        drawPoint(x, y, result ? "true" : "false");
     }
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-    var buttons = document.querySelectorAll(".ice-checkboxbutton button");
-    buttons.forEach(function(button) {
-        button.addEventListener("click", handleCheckboxButtonClick);
-    });
-});
-
 
 
 function checkX(value) {
@@ -128,38 +103,24 @@ function checkY(y) {
     return true;
 }
 
-function checkR() {
-    if (isNumeric(r)) {
-        if (r >= 1 && r <= 3) {
-            return true;
-        } else {
-            showError("R не входит в область допустимых значений")
-            return false;
-        }
-    } else {
-        showError("Значение R не выбрано")
-        return false;
-    }
-}
 
-
-function drawPoint(x, y, r, result) {
+function drawPoint(x, y, result) {
     clearError();
-    result = "false";
+    result = false;
+    r = r_cur
     if(x < 0 && y < 0) {
         if(-2*x - y <= r && 2*x >= -r && y >= -r) {
-            result = "true";
+            result = true;
         }
     } else if (x>= 0 && y >= 0) {
         if( 4*(x*x + y*y) <= r) {
-            result = "true";
+            result = true;
         }
     } else if (x>=0 && y <= 0) {
         if( x <= r && 2*y >= -r) {
-            result = "true";
+            result = true;
         }
     }
-    console.log(x,y,r,result, result === "true" ? 1 : 2);
     let svg = document.getElementById("graph");
     console.log(svg);
     let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -168,10 +129,10 @@ function drawPoint(x, y, r, result) {
     circle.setAttribute("r", 3);
     circle.setAttribute("class", "hitPoint");
     console.log(x, y, r, result, "drawPoint");
-    if(result === "true") {
+    if(result === true) {
         circle.setAttribute("fill", "#1ffd01");
     } else {
-        console.log(x,y,r,result, "hui");
+        console.log(x,y,r,result);
         circle.setAttribute("fill","#f60000");
     }
     svg.appendChild(circle);
