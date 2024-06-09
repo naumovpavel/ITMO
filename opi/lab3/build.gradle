@@ -1,5 +1,6 @@
 import javax.xml.transform.stream.StreamSource
 import javax.xml.validation.SchemaFactory
+import java.security.MessageDigest;
 
 plugins {
     id 'java'
@@ -14,273 +15,186 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.11'
-    implementation 'javax:javaee-web-api:7.0'
-    implementation 'com.sun.faces:jsf-api:2.2.18'
-    implementation 'com.sun.faces:jsf-impl:2.2.18'
+    compileOnly('jakarta.enterprise:jakarta.enterprise.cdi-api:4.0.1')
+    compileOnly('jakarta.validation:jakarta.validation-api:3.0.2')
+    implementation group: 'jakarta.faces', name: 'jakarta.faces-api', version: '4.0.1'
+    compileOnly('jakarta.servlet:jakarta.servlet-api:6.0.0')
+    implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '3.1.0'
+    compileOnly('jakarta.platform:jakarta.jakartaee-web-api:9.0.0')
+    implementation('org.primefaces:primefaces:13.0.0:jakarta')
+    compileOnly('jakarta.ws.rs:jakarta.ws.rs-api:3.1.0')
+    implementation group: 'jakarta.annotation', name: 'jakarta.annotation-api', version: '2.1.1'
+    implementation group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.0'
+    implementation 'org.postgresql:postgresql:42.2.27'
+    compileOnly('org.projectlombok:lombok:1.18.26')
+    annotationProcessor('org.projectlombok:lombok:1.18.26')
+    testCompileOnly('org.projectlombok:lombok:1.18.26')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.26')
+    implementation 'org.postgresql:postgresql:42.2.27'
+    compileOnly('jakarta.ejb:jakarta.ejb-api:4.0.1') //
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
     testImplementation 'org.junit.platform:junit-platform-console-standalone:1.10.2'
 }
-//
-//tasks.register('history') {
-//    group "opi"
-//    doLast {
-//        def success = false
-//        def diffResult = ""
-//        def outputStream
-//        def count = 0
-//        def commit = 'HEAD'
-//        def prevCommit = commit + '^'
-//        try {
-//            exec {
-//                workingDir projectDir
-//                commandLine 'bash', 'gradlew', 'compileJava'
-//            }
-//            success = true
-//        } catch (Exception e) {
-//            println "Compile error: ${e.message}"
-//            success = false
-//        }
-//        println "Compile result: $success"
-//        if (!success) {
-//            def diffFile = file("$buildDir/diff.txt")
-//
-//            def successfullyLoaded = false
-//
-//            while (!successfullyLoaded) {
-//                if (count == 0) {
-//                    outputStream = new ByteArrayOutputStream()
-//                    exec {
-//                        commandLine 'git', 'diff'
-//                        workingDir projectDir
-//                        standardOutput = outputStream
-//                    }
-//                    diffResult = outputStream.toString()
-//                    count = 1
-//                    exec {
-//                        commandLine 'git', 'reset', '--hard', commit
-//                        workingDir projectDir
-//                        ignoreExitValue true
-//                    }
-//                } else {
-//                    exec {
-//                        commandLine 'git', 'diff', prevCommit, commit
-//                        workingDir projectDir
-//                        standardOutput = outputStream
-//                    }
-//                    diffResult = outputStream.toString()
-//                    exec {
-//                        commandLine 'git', 'reset', '--hard', prevCommit
-//                        workingDir projectDir
-//                        ignoreExitValue true
-//                    }
-//
-//                }
-//
-//                try {
-//                    exec {
-//                        workingDir projectDir
-//                        commandLine 'bash', 'gradlew', 'compileJava'
-//                    }
-//                    success = true
-//                } catch (Exception e) {
-//                    println "Compile error: ${e.message}"
-//                    success = false
-//                }
-//                if (!success) {
-//                    println "Failed to compile project, retrying..."
-//                    commit = prevCommit
-//                    prevCommit += '^'
-//
-//
-//                } else {
-//                    println "Project compiled successfully, diff in ${diffFile}"
-//                    successfullyLoaded = true
-//                    def outputFile = new File("diff.txt")
-//                    outputFile.write(diffResult)
-//                }
-//
-//            }
-//
-//
-//        } else {
-//            println "Project compiled successfully, no need to load previous revision"
-//        }
-//    }
-//
-//}
-//
-//def srcDirMain = "${projectDir.path}/src/main"
-//def outputArtefactsDir = "${buildDir}/libs"
-//def compiledMain = "${buildDir}/classes/java/main"
-//def warAssemblingDir = "${buildDir}/war-tmp"
-//def mainSourceSet = sourceSets.main
-//
-//tasks.register('javadoc_task', Javadoc) {
-//    dependsOn 'compile'
-//
-//    source = sourceSets.main.allJava
-//    destinationDir = file("$buildDir/docs/javadoc")
-//    classpath = sourceSets.main.compileClasspath
-//
-//    options {
-//        encoding = 'UTF-8'
-//        charSet = 'UTF-8'
-//        links("https://docs.oracle.com/en/java/javase/17/docs/api/")
-//        addStringOption('Xdoclint:none', '-quiet')
-//    }
-//}
-//
-//tasks.register('md5sha1') {
-//    group = 'build'
-//    description = 'MD5 и SHA-1 хеш-суммы'
-//    dependsOn 'jar'
-//    doLast {
-//        def jarFile = file("build/libs/${project.name}.jar")
-//        if (!jarFile.exists()) {
-//            throw new FileNotFoundException("JAR file not found: ${jarFile.absolutePath}")
-//        }
-//
-//        def md5 = MessageDigest.getInstance("MD5")
-//        def sha1 = MessageDigest.getInstance("SHA-1")
-//
-//        jarFile.withInputStream { input ->
-//            byte[] buffer = new byte[8192]
-//            int bytesRead
-//            while ((bytesRead = input.read(buffer)) != -1) {
-//                md5.update(buffer, 0, bytesRead)
-//                sha1.update(buffer, 0, bytesRead)
-//            }
-//        }
-//
-//        def md5Hex = md5.digest().encodeHex().toString()
-//        def sha1Hex = sha1.digest().encodeHex().toString()
-//
-//        def manifestFile = file("src/main/resources/META-INF/MANIFEST.MF")
-//        manifestFile.parentFile.mkdirs()
-//        manifestFile.withWriterAppend { writer ->
-//            writer.println("MD5-Digest: ${md5Hex}")
-//            writer.println("SHA1-Digest: ${sha1Hex}")
-//        }
-//    }
-//}
-//
-//tasks.named('jar', Jar) {
-//    dependsOn 'javadoc_task'
-//    from("${buildDir}/javadoc") {
-//        into 'javadoc'
-//    }
-//}
-//
-//tasks.register('doc') {
-//    dependsOn 'javadoc_task', 'md5sha1'
-//}
-//
-//task CompileOPI {
-//    description = 'Компилирует все файлы проекта.'
-//    group = 'OPI'
-//    try {
-//        exec {
-//            workingDir projectDir
-//            commandLine 'bash', 'gradlew', 'compileJava'
-//        }
-//    } catch (Exception ignored) {
-//        exec {
-//            commandLine 'bash', 'gradlew', 'history'
-//        }
-//    }
-//    doLast {
-//        mkdir(warAssemblingDir)
-//        copy {
-//            into("${warAssemblingDir}/WEB-INF")
-//            from("${srcDirMain}/webapp/WEB-INF/faces-config.xml")
-//            from("${srcDirMain}/webapp/WEB-INF/web.xml")
-//            from("${srcDirMain}/webapp/WEB-INF/beans.xml")
-//            from("${compiledMain}") { into("classes") }
-//            from(mainSourceSet.runtimeClasspath) { into('lib') include('*.jar') }
-//        }
-//
-//        copy {
-//            from("${srcDirMain}/webapp/resources")
-//            into("${warAssemblingDir}/resources")
-//        }
-//        copy {
-//            from("${srcDirMain}/webapp/layout")
-//            into("${warAssemblingDir}/layout")
-//        }
-//        copy {
-//            into(warAssemblingDir)
-//            from("${srcDirMain}/webapp/index.xhtml")
-//            from("${srcDirMain}/webapp/main.xhtml")
-//        }
-//    }
-//}
-//
-//tasks.register('BuildOPI', Exec) {
-//    dependsOn CompileOPI
-//    mkdir(outputArtefactsDir)
-//    commandLine 'jar', '-cf', "${outputArtefactsDir}/${project.name}.war", '-C', warAssemblingDir, '.'
-//    doLast {
-//        exec {commandLine 'bash', 'gradlew', 'playMusic'}
-//    }
-//}
-//tasks.register("cleanOPI") {
-//    description = 'Удаляет все сгенерированные файлы и директории сборки.'
-//    delete rootProject.buildDir
-//}
-//tasks.register("testOPI", Test) {
-//    dependsOn build
-//    useJUnitPlatform()
-//    doLast {
-//        exec {commandLine 'bash', 'gradlew', 'report'}
-//    }
-//}
-//
+
+task compile {
+    dependsOn classes
+}
+
+task history {
+    doLast {
+        def success = false
+        def diffResult = ""
+        def outputStream
+        def count = 0
+        def prevCommit = 'HEAD'
+        def diffFile = file("$buildDir/diff.txt")
+
+        while (!success) {
+            try {
+                exec {
+                    commandLine 'gradlew', 'compile'
+                }
+                success = true
+            } catch (Exception e) {
+                println "Compile error: ${e.message}"
+                success = false
+            }
+            if(success) {
+                if(count == 0) {
+                    break
+                }
+                println "Project compiled successfully, diff in ${diffFile}"
+                successfullyLoaded = true
+                def outputFile = new File("diff.txt")
+                outputFile.write(diffResult)
+                break
+            }
+
+            println "Failed to compile project, checkout to prev commit"
+            if(count > 0) {
+                prevCommit += '^'
+            }
+
+            outputStream = new ByteArrayOutputStream()
+            exec {
+                commandLine 'git', 'diff', prevCommit,  '.'
+                standardOutput = outputStream
+            }
+            diffResult = outputStream.toString()
+            count++
+            exec {
+                commandLine 'git', 'checkout', prevCommit
+                ignoreExitValue true
+            }
+        }
+    }
+}
+
+tasks.register('javadoc_task', Javadoc) {
+    dependsOn classes
+
+    source = sourceSets.main.allJava
+    destinationDir = file("$buildDir/docs/javadoc")
+    classpath = sourceSets.main.compileClasspath
+
+    options {
+        encoding = 'UTF-8'
+        charSet = 'UTF-8'
+        links("https://docs.oracle.com/en/java/javase/17/docs/api/")
+        addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+tasks.register('md5sha1') {
+    dependsOn 'jar'
+    doLast {
+        def jarFile = file("build/libs/${project.name}.jar")
+        if (!jarFile.exists()) {
+            throw new FileNotFoundException("JAR file not found: ${jarFile.absolutePath}")
+        }
+
+        def md5 = MessageDigest.getInstance("MD5")
+        def sha1 = MessageDigest.getInstance("SHA-1")
+
+        jarFile.withInputStream { input ->
+            byte[] buffer = new byte[8192]
+            int bytesRead
+            while ((bytesRead = input.read(buffer)) != -1) {
+                md5.update(buffer, 0, bytesRead)
+                sha1.update(buffer, 0, bytesRead)
+            }
+        }
+
+        def md5Hex = md5.digest().encodeHex().toString()
+        def sha1Hex = sha1.digest().encodeHex().toString()
+
+        def manifestFile = file("src/main/resources/META-INF/MANIFEST.MF")
+        manifestFile.parentFile.mkdirs()
+        manifestFile.withWriterAppend { writer ->
+            writer.println("MD5-Digest: ${md5Hex}")
+            writer.println("SHA1-Digest: ${sha1Hex}")
+        }
+    }
+}
+
+tasks.named('jar', Jar) {
+    from("${buildDir}/javadoc") {
+        into 'javadoc'
+    }
+}
+
+tasks.register('doc') {
+    dependsOn 'javadoc_task', 'md5sha1'
+}
+
+tasks.register('doc_task') {
+    doLast {
+        def manifestContent = new StringBuilder()
+        fileTree(dir: '${projectDir}/src/main/java').visit { FileVisitDetails details ->
+            if (!details.directory) {
+                def md5 = MessageDigest.getInstance('MD5')
+                def sha1 = MessageDigest.getInstance('SHA-1')
+                details.file.withInputStream { is ->
+                    byte[] buffer = new byte[1024]
+                    int read = 0
+                    while ((read = is.read(buffer)) != -1) {
+                        md5.update(buffer, 0, read)
+                        sha1.update(buffer, 0, read)
+                    }
+                }
+                manifestContent.append(details.relativePath)
+                        .append(' MD5: ')
+                        .append(md5.digest().collect { String.format('%02x', it) }.join())
+                        .append(' SHA-1: ')
+                        .append(sha1.digest().collect { String.format('%02x', it) }.join())
+                        .append('\n')
+            }
+        }
+        file('src/main/resources/META-INF/MANIFEST.MF').text = manifestContent.toString()
+
+        def javadocDir = file("${buildDir}/docs/javadoc")
+        javadocDir.mkdirs()
+        exec {
+            commandLine 'javadoc', '-d', javadocDir, '-sourcepath', '${projectDir}/src/main/java', '-subpackages', '.'
+        }
+    }
+}
+
 //task playMusic {
+//    dependsOn build
 //    exec {
-//        commandLine 'bash', "myMusic.mp3"
+//        commandLine 'play', 'ALBLAK.mp3'
 //    }
 //}
-//task native2ascii {
-//    ant.native2ascii(src: project.file(file('src/main/webapp/resources/asciiOld')),
-//            dest: project.file(file('src/main/webapp/resources/asciiNew/')))
-//}
-//
-//task validateXml {
-//    group = 'OPI'
-//    doLast {
-//        fileTree('src/main').include('**/*.xml').each { file ->
-//            def schemaFactory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema")
-//            def schema = schemaFactory.newSchema()
-//            def validator = schema.newValidator()
-//            try {
-//                validator.validate(new StreamSource(file as File))
-//            } catch (Exception e) {
-//                println "${file} is not valid because ${e.message}"
-//            }
-//        }
-//    }
-//}
-//
-//task report {
-//    copy {
-//        from("${buildDir}/test-results/testOPI/*.xml")
-//        into("${projectDir}/report/")
-//    }
-//    exec {
-//        commandLine 'bash', 'git', 'add', '.'
-//    }
-//    exec {
-//        commandLine 'bash', 'git', 'commit', '-m', 'Add test reports'
-//    }
-//    exec {
-//        commandLine 'bash', 'git', 'push'
-//    }
-//}
-//
-//
+
+task native2ascii {
+    ant.native2ascii(src: project.file(file('src/main/webapp/resources/native')),
+            dest: project.file(file('src/main/webapp/resources/ascii/')))
+}
+
 
 tasks.register('env', Exec) {
     dependsOn build
@@ -288,8 +202,21 @@ tasks.register('env', Exec) {
         into("/Users/wiftwift/wildfly/wildfly-32.0.1.Final/standalone/deployments")
         from("${buildDir}/libs/lab3.war")
     }
-//    environment 'JAVA_OPTS', '-Xms256m -Xmx1024m'
-    commandLine 'bash', '/Users/wiftwift/wildfly/wildfly-32.0.1.Final/bin/standalone.sh'
+    environment 'JAVA_OPTS', '-Xms256m -Xmx1024m'
+    commandLine '/Users/wiftwift/wildfly/wildfly-32.0.1.Final/bin/standalone.sh'
+}
+
+tasks.register('report') {
+    copy {
+        from("${buildDir}/test-results/testOPI/*.xml")
+        into("${projectDir}/report/")
+    }
+    exec {
+        commandLine 'git', 'add', '.'
+    }
+    exec {
+        commandLine 'git', 'commit', '-m', 'Add test reports'
+    }
 }
 
 test {

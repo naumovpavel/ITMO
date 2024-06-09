@@ -1,0 +1,148 @@
+body {
+    margin: 0;
+    background-color: #b4b4b4;
+    height: 100vh;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+table.header {
+    font-size: 20px;
+    color: #656565;
+    width: 100%;
+    background-color: #6c757d;
+    height: 40px;
+}
+
+.submitButton {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+table.body {
+    padding: 20px;
+    font-size: 20px;
+    color: black;
+    width: 100%;
+    height: 100%;
+}
+
+.graph {
+    width: 40vw;
+}
+
+#coordinates {
+    width: 90%;
+}
+
+.columnWithData, .coordinates-form .frontTables {
+    height: 100%;
+}
+
+.result_width {
+    margin-top: 50px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back_href {
+    font-size: 20px;
+    text-underline-offset: 0.25em;
+    --bs-link-underline-opacity: 0.25;
+    color: RGBA(33,37,41);
+    -webkit-text-decoration-color: RGBA(33,37,41);
+    text-decoration-color: RGBA(33,37,41, var(--bs-link-underline-opacity, 1)) ;
+}
+.back_href:hover {
+     text-decoration-color: RGBA(33,37,41);
+ }
+
+.coordinates-form {
+
+    display: flex;
+    flex-direction: column;
+    float: left;
+}
+
+input[type=checkbox] {
+    border-radius: 0.25em;
+    width: 1em;
+    height: 1em;
+    margin-top: 4px;
+}
+
+#inputText, .submitButton {
+    width: 50%;
+    margin-left: 5px;
+}
+
+.submitButton {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.coordinates-form {
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+
+.frontTables {
+    width: 100%;
+    border-radius: 3%;
+    border-collapse: collapse;
+    min-width: 400px;
+
+}
+
+
+.frontTables thead, .frontTables tbody {
+    width: 100%;
+}
+
+.frontTables th,
+.frontTables td {
+    padding: 12px 15px;
+    border: 1px solid black
+}
+
+.frontTables tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.scroll {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    height: 550px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: block
+}
+
+/* Стили для скролла */
+.scroll::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+    background-color: rgba(44, 37, 37, 0.3);
+    border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: linear-gradient(180deg, #18130c, #887c1c, #18130c);
+}
+#clock{
+    color: #000;
+    font-weight: bold;
+    font-size: 30px;
+}
